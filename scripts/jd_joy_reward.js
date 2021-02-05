@@ -172,7 +172,7 @@ function getExchangeRewards() {
         "Connection": "keep-alive",
         "Accept": "*/*",
         "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0"),
-        "Referer": "https://jdjoy.jd.com/pet/index",
+        "Referer": "https://jdjoy.jd.com/common/pet/index",
         "Accept-Language": "zh-cn",
         "Accept-Encoding": "gzip, deflate, br"
       },
