@@ -9,10 +9,13 @@ let CookieJDs = [
 ]
 // 判断github action里面是否有京东ck
 if (process.env.JD_COOKIE) {
+	/*
   if (process.env.JD_COOKIE.indexOf('&') > -1) {
     console.log(`您的cookie选择的是用&隔开\n`)
     CookieJDs = process.env.JD_COOKIE.split('&');
   } else if (process.env.JD_COOKIE.indexOf('\n') > -1) {
+  */
+  if (process.env.JD_COOKIE.indexOf('\n') > -1) {
     console.log(`您的cookie选择的是用换行隔开\n`)
     CookieJDs = process.env.JD_COOKIE.split('\n');
   } else {
