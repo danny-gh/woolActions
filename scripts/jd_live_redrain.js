@@ -96,8 +96,8 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
       $.log(`无法从本地读取配置，请检查运行时间`)
       return
     }
-  } else{
-    $.log(`远程红包雨配置获取成功`)
+  //} else{
+  //  $.log(`远程红包雨配置获取成功`)
   }
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
