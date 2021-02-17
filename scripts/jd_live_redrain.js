@@ -78,11 +78,14 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
+    /*
   $.log(`=====远程红包雨信息=====`)
   await getRedRain();
 	if(!$.activityId) return
+    */
   let nowTs = new Date().getTime()
-  if (!($.st <= nowTs && nowTs < $.ed)) {
+  //if (!($.st <= nowTs && nowTs < $.ed)) {
+  {
     $.log(`远程红包雨配置获取错误，从本地读取配置`)
     $.log(`\n`)
     let hour = (new Date().getUTCHours() + 8) %24
