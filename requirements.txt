@@ -1,4 +1,3 @@
 requests
 rsa
-ws
 python-dateutil
