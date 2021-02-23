@@ -1,9 +1,9 @@
-name: 美丽研究院
+name: 京东家庭号
 
 on:
     workflow_dispatch:
     schedule:
-        - cron: "10 3,9,16,22 * * *"
+        - cron: "20 3,9,16,22 * * *"
     watch:
         types: [started]
     repository_dispatch:
@@ -22,7 +22,7 @@ jobs:
                   node-version: "12.x"
             - name: npm install
               run: npm install
-            - name: "运行 【美丽研究院】"
+            - name: "运行 【京东家庭号】"
               run: node onlyOneExecute.js
               env:
                   JD_COOKIE: ${{ github.event.client_payload.JD_COOKIE || secrets.JD_COOKIE }}
@@ -45,4 +45,4 @@ jobs:
                   JD_BEAN_STOP: ${{ github.event.client_payload.JD_BEAN_STOP || secrets.JD_BEAN_STOP }}
                   JD_BEAN_SIGN_STOP_NOTIFY: ${{ github.event.client_payload.JD_BEAN_SIGN_STOP_NOTIFY || secrets.JD_BEAN_SIGN_STOP_NOTIFY }}
                   JD_BEAN_SIGN_NOTIFY_SIMPLE: ${{ github.event.client_payload.JD_BEAN_SIGN_NOTIFY_SIMPLE || secrets.JD_BEAN_SIGN_NOTIFY_SIMPLE }}
-                  SYNCURL: https://github.com/danny-gh/woolActions/raw/main/scripts/jd_beauty.js
+                  SYNCURL: https://github.com/danny-gh/woolActions/raw/main/scripts/jd_family.js
