@@ -53,7 +53,11 @@ if ($.isNode()) {
 }
 let wantProduct = ``;//心仪商品名称
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
-const inviteCodes = [`T014-r8qA1pIq1XWIQCjVWnYaS5kRrbA@T0225KkcRUpIoFTTI0n1wvELdACjVWnYaS5kRrbA@T0225KkcRR1K8wXXJxKiwaIIdACjVWnYaS5kRrbA@T018v_h6QBsa9VfeKByb1ACjVWnYaS5kRrbA@T016aGPImbWDIsNs9Zd1CjVWnYaS5kRrbA@T020anX1lb-5IPJt9JJyQH-MCjVWnYaS5kRrbA@T0225KkcRBoRp1SEJBP1nKIDdgCjVWnYaS5kRrbA@T0225KkcRBoRp1SEJBP1nKIDdgCjVWnYaS5kRrbA`, 'T014-r8qA1pIq1XWIQCjVWnYaS5kRrbA@T0225KkcRUpIoFTTI0n1wvELdACjVWnYaS5kRrbA@T0225KkcRR1K8wXXJxKiwaIIdACjVWnYaS5kRrbA@T018v_h6QBsa9VfeKByb1ACjVWnYaS5kRrbA@T016aGPImbWDIsNs9Zd1CjVWnYaS5kRrbA@T020anX1lb-5IPJt9JJyQH-MCjVWnYaS5kRrbA@T0225KkcRBoRp1SEJBP1nKIDdgCjVWnYaS5kRrbA@T0225KkcRBoRp1SEJBP1nKIDdgCjVWnYaS5kRrbA'];
+const inviteCodes = [
+    'T014-r8qA1pIq1XWIQCjVWnYaS5kRrbA@T0225KkcRUpIoFTTI0n1wvELdACjVWnYaS5kRrbA@T018v_V1QB8f91fWKBqb1ACjVWnYaS5kRrbA',    //账号一的好友shareCode,不同好友中间用@符号隔开
+    'T014-r8qA1pIq1XWIQCjVWnYaS5kRrbA@T0225KkcRUpIoFTTI0n1wvELdACjVWnYaS5kRrbA@T018v_V1QB8f91fWKBqb1ACjVWnYaS5kRrbA',    //账号二的好友shareCode，不同好友中间用@符号隔开
+];
+
 !(async () => {
   await requireConfig();
   if (!cookiesArr[0]) {
