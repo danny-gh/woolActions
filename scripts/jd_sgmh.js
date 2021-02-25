@@ -339,7 +339,7 @@ function readShareCode() {
         resolve(data);
       }
     })
-    await $.wait(2000);
+    await $.wait(4000);
     resolve()
   })
 }
