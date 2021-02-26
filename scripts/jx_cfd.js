@@ -80,7 +80,7 @@
 *
 **/
 
-const $ = new Env("京喜财富岛");
+const $ = new Env('京喜财富岛');
 const JD_API_HOST = "https://m.jingxi.com/";
 const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
