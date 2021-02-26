@@ -260,6 +260,13 @@ async function downloader_jd() {
             "USER_AGENTS"
         );
     }
+    if (remoteContent.indexOf("new Env('京喜财富岛')") > 0) {
+        await download(
+            "https://github.com/danny-gh/woolActions/raw/main/scripts/jdJxncTokens.js",
+            "./jdJxncTokens.js",
+            "京喜农场Token"
+        );
+    }
 }
 
 async function downloader_notify() {
