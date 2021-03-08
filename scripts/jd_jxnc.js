@@ -53,6 +53,7 @@ const openUrl = `openjd://virtual?params=${encodeURIComponent('{ "category": "ju
 let subTitle = '', message = '', option = {'open-url': openUrl}; // 消息副标题，消息正文，消息扩展参数
 const JXNC_API_HOST = 'https://wq.jd.com/';
 
+let allMessage = '';
 $.detail = []; // 今日明细列表
 $.helpTask = null;
 $.allTask = []; // 任务列表
@@ -98,6 +99,9 @@ let assistUserShareCode = 0; // 随机助力用户 share code
             await jdJXNC(); // 执行当前账号 主代码流程
         }
     }
+    if ($.isNode() && allMessage) {
+        await notify.sendNotify(`${$.name}`, `${allMessage}`)
+      }
 })()
     .catch((e) => {
         $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
@@ -234,7 +238,11 @@ function TotalBean() {
                             $.isLogin = false; //cookie过期
                             return
                         }
-                        $.nickName = data['base'].nickname;
+                        if (data['retcode'] === 0) {
+              $.nickName = data['base'].nickname;
+            } else {
+              $.nickName = $.UserName
+            }
                     } else {
                         console.log(`京东服务器返回空数据`)
                     }
@@ -512,7 +520,7 @@ function submitInviteId(userName) {
 function getAssistUser() {
     return new Promise(resolve => {
         try {
-            $.get({url: `https://api.ninesix.cc/api/jx-nc?active=${$.info.active}`, timeout: 10000}, async (err, resp, _data) => {
+            $.get({url: ``, timeout: 10000}, async (err, resp, _data) => {
                 try {
                     const {code, data: {value, extra = {}} = {}} = JSON.parse(_data);
                     if (value && extra.active) { //  && extra.joinnum 截止 2021-01-22 16:39:09 API 线上还未部署新的 joinnum 参数代码，暂时默认 1 兼容
@@ -660,7 +668,8 @@ async function showMsg() {
     if (notifyBool) {
         $.msg($.name, subTitle, message, option);
         if ($.isNode()) {
-            await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName}`, `${subTitle}\n${message}`);
+            // await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName}`, `${subTitle}\n${message}`);
+            allMessage += `${subTitle}\n${message}${$.index !== cookieArr.length ? '\n\n' : ''}`
         }
     } else {
         $.log(`${$.name} - notify 通知已关闭\n账号${$.index} - ${$.nickName}\n${subTitle}\n${message}`);

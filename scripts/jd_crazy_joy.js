@@ -274,6 +274,7 @@ async function jdCrazyJoy() {
     console.log(`检测您打开了自动兑换开关，去兑换京豆`)
     await doApplyJdBean(applyJdBean)
   }
+  await getSpecialJoy();
   await showMsg();
 }
 async function doTasks() {
@@ -319,7 +320,7 @@ function doApplyJdBean(bean = 1000) {
     })
   })
 }
-function getUserInfo(code = "EdLPh8A6X5G1iWXu-uPYfA==") {
+function getUserInfo(code = "WYJ0yHMAY9EyV87yr81V6at9zd5YaBeE") {
   let body = {"paramData": {"inviter": code}}
   return new Promise(async resolve => {
     $.get(taskUrl('crazyJoy_user_gameState', JSON.stringify(body)), async (err, resp, data) => {
@@ -826,7 +827,11 @@ function TotalBean() {
               $.isLogin = false; //cookie过期
               return
             }
-            $.nickName = data['base'].nickname;
+            if (data['retcode'] === 0) {
+              $.nickName = data['base'].nickname;
+            } else {
+              $.nickName = $.UserName
+            }
           } else {
             console.log(`京东服务器返回空数据`)
           }
