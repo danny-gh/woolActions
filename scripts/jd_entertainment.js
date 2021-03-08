@@ -2,19 +2,35 @@
 百变大咖秀
 活动入口：首页搜索-‘百变大咖秀’-底部最右侧按钮
 请手动进入一次活动页面已确保能够自动抽奖
-活动地址：https://lzdz-isv.isvjcloud.com/dingzhi/change/able/activity/3508994?activityId=dz2102100001340203
-byi-chenzhe
+活动地址：https://lzdz-isv.isvjcloud.com/dingzhi/change/able/activity/3508994?activityId=dz2102100001340205
+
+新手写脚本，难免有bug，能用且用。
+多谢 whyour 大佬 指导
+
 脚本内置了一个给作者任务助力的网络请求，默认开启，如介意请自行关闭。
+助力活动链接： https://h5.m.jd.com/babelDiy/Zeus/4ZK4ZpvoSreRB92RRo8bpJAQNoTq/index.html
 参数 helpAuthor = false
+
+更新地址：https://raw.githubusercontent.com/i-chenzhe/qx/main/jd_entertainment.js
+============Quantumultx===============
+[task_local]
+#百变大咖秀
+10 10,11 * * 2-5 https://raw.githubusercontent.com/i-chenzhe/qx/main/jd_entertainment.js, tag=百变大咖秀,  enabled=true
+================Loon==============
+[Script]
+cron "10 10,11 * * 2-5" script-path=https://raw.githubusercontent.com/i-chenzhe/qx/main/jd_entertainment.js,tag=百变大咖秀
+===============Surge=================
+百变大咖秀 = type=cron,cronexp="10 10,11 * * 2-5",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/i-chenzhe/qx/main/jd_entertainment.js
+============小火箭=========
+百变大咖秀 = type=cron,script-path=https://raw.githubusercontent.com/i-chenzhe/qx/main/jd_entertainment.js, cronexpr="10 10,11 * * 2-5", timeout=3600, enable=true
 */
 
 const $ = new Env('百变大咖秀');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 let cookiesArr = [], cookie = '', originCookie = '', message = '';
-let helpAuthor = true;//为作者助力的开关
-var __encode ='jsjiami.com',_a={}, _0xb483=["\x5F\x64\x65\x63\x6F\x64\x65","\x68\x74\x74\x70\x3A\x2F\x2F\x77\x77\x77\x2E\x73\x6F\x6A\x73\x6F\x6E\x2E\x63\x6F\x6D\x2F\x6A\x61\x76\x61\x73\x63\x72\x69\x70\x74\x6F\x62\x66\x75\x73\x63\x61\x74\x6F\x72\x2E\x68\x74\x6D\x6C"];(function(_0xd642x1){_0xd642x1[_0xb483[0]]= _0xb483[1]})(_a);var __Oxb26e9=["\x53\x6F\x75\x6E\x64\x61\x6E\x74\x6F\x6E\x79","\x52\x61\x6E\x64\x6F\x6D\x53\x68\x61\x72\x65\x43\x6F\x64\x65","\x4A\x44\x5F\x46\x72\x65\x65\x33\x2E\x6A\x73\x6F\x6E","\x2F\x2F\x67\x69\x74\x65\x65\x2E\x63\x6F\x6D\x2F","\x2F","\x2F\x72\x61\x77\x2F\x6D\x61\x73\x74\x65\x72\x2F","","\x75\x6E\x64\x65\x66\x69\x6E\x65\x64","\x6C\x6F\x67","\u5220\u9664","\u7248\u672C\u53F7\uFF0C\x6A\x73\u4F1A\u5B9A","\u671F\u5F39\u7A97\uFF0C","\u8FD8\u8BF7\u652F\u6301\u6211\u4EEC\u7684\u5DE5\u4F5C","\x6A\x73\x6A\x69\x61","\x6D\x69\x2E\x63\x6F\x6D"];let shuye72=__Oxb26e9[0x0];let shuye73=__Oxb26e9[0x1];let shuye74=__Oxb26e9[0x2];let giteeurl=__Oxb26e9[0x3]+ shuye72+ __Oxb26e9[0x4]+ shuye73+ __Oxb26e9[0x5]+ shuye74+ __Oxb26e9[0x6];;;(function(_0x1ce9x5,_0x1ce9x6,_0x1ce9x7,_0x1ce9x8,_0x1ce9x9,_0x1ce9xa){_0x1ce9xa= __Oxb26e9[0x7];_0x1ce9x8= function(_0x1ce9xb){if( typeof alert!== _0x1ce9xa){alert(_0x1ce9xb)};if( typeof console!== _0x1ce9xa){console[__Oxb26e9[0x8]](_0x1ce9xb)}};_0x1ce9x7= function(_0x1ce9xc,_0x1ce9x5){return _0x1ce9xc+ _0x1ce9x5};_0x1ce9x9= _0x1ce9x7(__Oxb26e9[0x9],_0x1ce9x7(_0x1ce9x7(__Oxb26e9[0xa],__Oxb26e9[0xb]),__Oxb26e9[0xc]));try{_0x1ce9x5= __encode;if(!( typeof _0x1ce9x5!== _0x1ce9xa&& _0x1ce9x5=== _0x1ce9x7(__Oxb26e9[0xd],__Oxb26e9[0xe]))){_0x1ce9x8(_0x1ce9x9)}}catch(e){_0x1ce9x8(_0x1ce9x9)}})({})
-const ACT_ID = 'dz2102100001340203';
+let helpAuthor = false;//为作者助力的开关
+const ACT_ID = 'dz2102100001340205';
 const questionList = [
   { q: '84d9ef3ccb2543449935871c2a95f2aa', a: 'B:玲花' },
   { q: '12ffa15a77c3489ca644ff0880e79343', a: 'A:倪萍' },
