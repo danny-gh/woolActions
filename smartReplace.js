@@ -259,6 +259,11 @@ async function downloader_jd() {
             "./USER_AGENTS.js",
             "USER_AGENTS"
         );
+        await download(
+            "https://github.com/danny-gh/woolActions/raw/main/scripts/JS_USER_AGENTS.js",
+            "./JS_USER_AGENTS.js",
+            "JS_USER_AGENTS"
+        );
     }
     if (remoteContent.indexOf("new Env('京喜财富岛')") > 0 || remoteContent.indexOf("new Env('京喜财富岛提现')") > 0) {
         await download(
