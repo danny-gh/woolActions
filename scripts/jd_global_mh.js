@@ -112,7 +112,7 @@ async function getHome(info = false) {
             data = JSON.parse(data);
             if (data['code'] === '0') {
               const {myLuckyBox, luckyBoxList, rewardBagList} = data.result.data
-              let beanBox = luckyBoxList.filter(vo => vo.boxMaterials.findIndex(bo => bo.title === '京豆') > -1)
+              let beanBox = luckyBoxList.filter(vo => vo.boxMaterials.findIndex(bo => !!bo & bo.title === '京豆') > -1)
               if (beanBox.length) {
                 beanBox = beanBox[0]
                 if (beanBox['orderNo'] !== '' && beanBox['openRecId'] !== '') {
@@ -306,6 +306,15 @@ function openBox(body) {
   })
 }
 function taskUrl(function_id, body = {}) {
+  function getSign(data) {
+    let t = +new Date()
+
+    return {sealsTs: t, seals: $.md5(`${data.taskId}${data.inviterPin?data.inviterPin:''}${t}hbpt2020`)}
+  }
+  if(body['taskId']) {
+    body = {...body, ...getSign(body)}
+  }
+
   return {
     url: `${JD_API_HOST}client.action?functionId=${function_id}&body=${escape(JSON.stringify(body))}&appid=global_mart`,
     headers: {
@@ -366,7 +375,7 @@ function TotalBean() {
               return
             }
             if (data['retcode'] === 0) {
-              $.nickName = data['base'].nickname;
+              $.nickName = (data['base'] && data['base'].nickname) || $.UserName;
             } else {
               $.nickName = $.UserName
             }

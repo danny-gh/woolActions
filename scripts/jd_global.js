@@ -113,6 +113,7 @@ async function jdGlobal() {
 async function helpFriends() {
   $.canHelp = true
   for (let code of $.newShareCodes) {
+    console.log(`去助力好友${code}`)
     if (!code) continue
     await helpFriend(code)
     if(!$.canHelp) break
@@ -191,7 +192,8 @@ async function getTask() {
               let task = [...timeLimitTask, ...commonTask]
               for (let vo of task) {
                 if (vo['taskName'] === '每日邀请好友') {
-                  console.log(`您的好友助力码为 ${vo['jingCommand']['keyOpenapp'].match(/masterPin":"(.*)","/)[1]}`)
+                  // console.log(`您的好友助力码为 ${vo['jingCommand']['keyOpenapp'].match(/masterPin":"(.*)","/)[1]}`)
+                  console.log(`\n【京东账号${$.index}（${$.nickName || $.UserName}）的${$.name}好友互助码】${vo['jingCommand']['keyOpenapp'].match(/masterPin":"(.*)","/)[1]}\n`);
                   $.invites.push(vo['jingCommand']['keyOpenapp'].match(/masterPin":"(.*)","/)[1]);
                 }
                 if (['70', '50', '30', '40'].includes(vo['taskType'])) {
@@ -253,7 +255,7 @@ async function helpFriend(inviterPin) {
   return new Promise(resolve => {
     $.get(taskUrl("inviteHelp", {
       "inviterPin": inviterPin,
-      "taskId": "3",
+      "taskId": "51",
       "pageType": "doHelp",
       "headImg": "",
       "username": "",
@@ -387,6 +389,14 @@ function requireConfig() {
 }
 
 function taskUrl(function_id, body = {}) {
+  function getSign(data) {
+    let t = +new Date()
+
+    return {sealsTs: t, seals: $.md5(`${data.taskId}${data.inviterPin?data.inviterPin:''}${t}hbpt2020`)}
+  }
+  if(body['taskId']) {
+    body = {...body, ...getSign(body)}
+  }
   return {
     url: `${JD_API_HOST}/client.action?functionId=${function_id}&body=${escape(JSON.stringify(body))}&appid=global_mart&time=${new Date().getTime()}`,
     headers: {
