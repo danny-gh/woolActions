@@ -108,7 +108,11 @@ function index(info=false) {
             data = JSON.parse(data);
             if(data.code===0 && data.data.result){
               if(info){
-                message += `当前现金：${data.data.result.signMoney}元`
+                if (message) {
+                  message += `当前现金：${data.data.result.signMoney}元`;
+                  allMessage += `京东账号${$.index}${$.nickName}\n${message}${$.index !== cookiesArr.length ? '\n\n' : ''}`;
+                }
+                message += `当前现金：${data.data.result.signMoney}元`;
                 return
               }
               // console.log(`您的助力码为${data.data.result.inviteCode}`)

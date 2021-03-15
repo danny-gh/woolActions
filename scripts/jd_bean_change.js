@@ -239,6 +239,7 @@ function queryexpirejingdou() {
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.1 Mobile/15E148 Safari/604.1"
       }
     }
+    $.expirejingdou = 0;
     $.get(options, (err, resp, data) => {
       try {
         if (err) {
@@ -253,10 +254,10 @@ function queryexpirejingdou() {
               data['expirejingdou'].map(item => {
                 console.log(`${timeFormat(item['time'] * 1000)}日过期京豆：${item['expireamount']}\n`);
               })
-              const expirejingdou = data['expirejingdou'][0]['expireamount'];
-              if (expirejingdou > 0) {
-                $.message += `\n今日将过期：${expirejingdou}京豆 🐶`;
-              }
+              $.expirejingdou = data['expirejingdou'][0]['expireamount'];
+              // if ($.expirejingdou > 0) {
+              //   $.message += `\n今日将过期：${$.expirejingdou}京豆 🐶`;
+              // }
             }
           } else {
             console.log(`京东服务器返回空数据`)
@@ -273,13 +274,13 @@ function queryexpirejingdou() {
 function redPacket() {
   return new Promise(async resolve => {
     const options = {
-      "url": `https://wq.jd.com/user/info/QueryUserRedEnvelopes?channel=3&type=1&page=0&pageSize=100&orgFlag=JD_PinGou_New&expiredRedFlag=1&sceneval=2&g_login_type=1&g_ty=ls`,
+      "url": `https://m.jingxi.com/user/info/QueryUserRedEnvelopesV2?type=1&orgFlag=JD_PinGou_New&page=1&cashRedType=1&redBalanceFlag=1&channel=1&_=${+new Date()}&sceneval=2&g_login_type=1&g_ty=ls`,
       "headers": {
-        'Host': 'wq.jd.com',
+        'Host': 'm.jingxi.com',
         'Accept': '*/*',
         'Connection': 'keep-alive',
         'Accept-Language': 'zh-cn',
-        'Referer': 'https://wqs.jd.com/my/redpacket.shtml',
+        'Referer': 'https://st.jingxi.com/my/redpacket.shtml?newPg=App&jxsid=16156262265849285961',
         'Accept-Encoding': 'gzip, deflate, br',
         "Cookie": cookie,
         'User-Agent': $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0")
@@ -293,10 +294,36 @@ function redPacket() {
         } else {
           if (data) {
             data = JSON.parse(data).data
+            $.jxRed = 0, $.jsRed = 0, $.jdRed = 0, $.jxRedExpire = 0, $.jsRedExpire = 0, $.jdRedExpire = 0;
+            let t = new Date()
+            t.setDate(t.getDate() + 1)
+            t.setHours(0, 0, 0, 0)
+            t = parseInt((t - 1) / 1000)
+            for (let vo of data.useRedInfo.redList) {
+              if (vo.activityName.includes("京喜")) {
+                $.jxRed += parseFloat(vo.balance)
+                if (vo['endTime'] === t) {
+                  $.jxRedExpire += parseFloat(vo.balance)
+                }
+              } else if (vo.activityName.includes("极速版")) {
+                $.jsRed += parseFloat(vo.balance)
+                if (vo['endTime'] === t) {
+                  $.jsRedExpire += parseFloat(vo.balance)
+                }
+              } else {
+                $.jdRed += parseFloat(vo.balance)
+                if (vo['endTime'] === t) {
+                  $.jdRedExpire += parseFloat(vo.balance)
+                }
+              }
+            }
+            $.jxRed = $.jxRed.toFixed(2)
+            $.jsRed = $.jsRed.toFixed(2)
+            $.jdRed = $.jdRed.toFixed(2)
             $.balance = data.balance
             $.expiredBalance = data.expiredBalance || 0;
-            $.message += `\n当前红包：${$.balance}元🧧`;
-            if ($.expiredBalance > 0) $.message += `\n今明二日过期：${$.expiredBalance}元红包🧧`;
+            $.message += `\n当前总红包：${$.balance}(今日总过期${($.jxRedExpire + $.jsRedExpire + $.jdRedExpire).toFixed(2)})元 🧧\n京喜红包：${$.jxRed}(今日将过期${$.jxRedExpire.toFixed(2)})元 🧧\n极速版红包：${$.jsRed}(今日将过期${$.jsRedExpire.toFixed(2)})元 🧧\n京东红包：${$.jdRed}(今日将过期${$.jdRedExpire.toFixed(2)})元 🧧`;
+            // if ($.expiredBalance > 0) $.message += `\n今明二日过期：${$.expiredBalance}元红包🧧`;
           } else {
             console.log(`京东服务器返回空数据`)
           }
