@@ -244,6 +244,7 @@ async function downloader_jd() {
         );
     }
     if (remoteContent.indexOf("new Env('京喜农场')") > 0) {
+        await download("https://github.com/danny-gh/woolActions/raw/main/scripts/jdCookie.js", "./jdCookie.js", "京东Cookies");
         await download(
             "https://github.com/danny-gh/woolActions/raw/main/scripts/jdJxncTokens.js",
             "./jdJxncTokens.js",
