@@ -5,7 +5,7 @@ name: 京东红包雨
 on:
     workflow_dispatch:
     schedule:
-        - cron: '28 12-15 * * *'
+        - cron: '20 12-15 * * *'
     watch:
         types: [started]
     repository_dispatch:
