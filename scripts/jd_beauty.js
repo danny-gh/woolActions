@@ -39,7 +39,6 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
-      console.log(`get Cookie from cookiesArr: ${cookie}`);
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1])
       $.index = i + 1;
       $.isLogin = true;
@@ -501,12 +500,10 @@ function getToken() {
       'User-Agent': $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0") : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0"),
       'Referer': 'https://xinruimz-isv.isvjcloud.com/logined_jd/',
       'Authorization': 'Bearer undefined',
-      'Cookie': `IsvToken=${$.isvToken}`
+      'Cookie': cookie + `;IsvToken=${$.isvToken}`
       //'Cookie': `IsvToken=${$.isvToken};`
     }
   }
-  console.log(`getToken Cookie: `)
-  console.log(`${JSON.stringify(cookie)}`)
   return new Promise(resolve => {
     $.post(config, async (err, resp, data) => {
       try {
