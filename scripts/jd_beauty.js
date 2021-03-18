@@ -504,6 +504,8 @@ function getToken() {
       //'Cookie': `IsvToken=${$.isvToken};`
     }
   }
+  console.log(`getToken Cookie: `)
+  console.log(cookie + `IsvToken=${$.isvToken};`)
   return new Promise(resolve => {
     $.post(config, async (err, resp, data) => {
       try {
