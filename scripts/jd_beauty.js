@@ -492,14 +492,18 @@ function getToken() {
     body: JSON.stringify({"token":$.token2,"source":"01"}),
     headers: {
       'Host': 'xinruimz-isv.isvjcloud.com',
-      'Accept': 'application/x.jd-school-island.v1+json',
-      'Source': '02',
-      'Accept-Language': 'zh-cn',
-      'Content-Type': 'application/json;charset=UTF-8',
+      'Sec-Fetch-Site': 'cors',
       'Origin': 'https://xinruimz-isv.isvjcloud.com',
-      'User-Agent': $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0") : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0"),
-      'Referer': 'https://xinruimz-isv.isvjcloud.com/logined_jd/',
+      'Source': '02',
       'Authorization': 'Bearer undefined',
+      'Content-Type': 'application/json;charset=UTF-8',
+      'Accept': 'application/x.jd-school-island.v1+json',
+      'User-Agent': $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0") : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0"),
+      'X-Requested-With': 'com.jindong.app.mall',
+      'Sec-Fetch-Site': 'same-origin',
+      'Referer': 'https://xinruimz-isv.isvjcloud.com/logined_jd/',
+      'Accept-Encoding': 'gzip,deflate,br',
+      'Accept-Language': 'zh-cn',
       'Cookie': cookie + `;IsvToken=${$.isvToken}`
       //'Cookie': `IsvToken=${$.isvToken};`
     }
