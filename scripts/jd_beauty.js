@@ -39,6 +39,7 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
+      console.log(`get Cookie from cookiesArr: ${cookie}`);
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1])
       $.index = i + 1;
       $.isLogin = true;
