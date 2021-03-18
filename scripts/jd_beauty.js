@@ -505,7 +505,7 @@ function getToken() {
     }
   }
   console.log(`getToken Cookie: `)
-  console.log('${cookie}')
+  console.log(`${JSON.stringify(cookie)}`)
   return new Promise(resolve => {
     $.post(config, async (err, resp, data) => {
       try {
