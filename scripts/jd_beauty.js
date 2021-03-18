@@ -500,12 +500,12 @@ function getToken() {
       'User-Agent': $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0") : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0"),
       'Referer': 'https://xinruimz-isv.isvjcloud.com/logined_jd/',
       'Authorization': 'Bearer undefined',
-      'Cookie': cookie + `IsvToken=${$.isvToken};`
+      'Cookie': `IsvToken=${$.isvToken}`
       //'Cookie': `IsvToken=${$.isvToken};`
     }
   }
   console.log(`getToken Cookie: `)
-  console.log(cookie + `IsvToken=${$.isvToken};`)
+  console.log(cookie)
   return new Promise(resolve => {
     $.post(config, async (err, resp, data) => {
       try {
