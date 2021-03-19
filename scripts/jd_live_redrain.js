@@ -23,6 +23,10 @@ let bodyList = {
   '19': {
     url: 'https://api.m.jd.com/client.action?functionId=liveActivityV842&uuid=8888888&client=apple&clientVersion=9.4.1&st=1615900663048&sign=3dfbdf3e3f0e0701c8c4070c14b4f5b0&sv=100',
     body: 'body=%7B%22liveId%22%3A%223704156%22%7D'
+  },
+  "23": {
+    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV842&uuid=8888888&client=apple&clientVersion=9.4.1&st=1616121346006&sign=27acd12da7b5d5c1c3afe67d81490142&sv=100",
+    "body": "body=%7B%22liveId%22%3A%223719359%22%7D"
   }
 }
 let ids = {
@@ -50,7 +54,6 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
   }
   await getRedRain();
 
-/*
   let nowTs = new Date().getTime()
   if (!($.st <= nowTs && nowTs < $.ed)) {
     $.log(`远程红包雨配置获取错误，从本地读取配置`)
@@ -60,14 +63,12 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
       $.log(`本地红包雨配置获取成功`)
     } else{
       $.log(`无法从本地读取配置，请检查运行时间(注：非红包雨时间执行出现此提示请忽略！！！！！！！！！！！)`)
-      $.log(`出现异常提示请忽略。红包雨期间会正常，此脚本提issue打死！！！！！！！！！！！)`)
+      $.log(`下一场直播时间:03月19日  20:00，非红包雨期间出现上面提示请忽略。红包雨期间会正常，此脚本提issue打死！！！！！！！！！！！)`)
       return
     }
   } else{
     $.log(`远程红包雨配置获取成功`)
   }
-  */
-  
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
