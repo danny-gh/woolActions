@@ -12,7 +12,7 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //const WebSocket = $.isNode() ? require('websocket').w3cwebsocket: SockJS;
 let jdNotify = true;//是否关闭通知，false打开通知推送，true关闭通知推送
-const randomCount = $.isNode() ? 20 : 5;
+const randomCount = $.isNode() ? 0 : 5;
 const bean = 500
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message, helpInfo, ADD_CART = false;
@@ -492,20 +492,15 @@ function getToken() {
     body: JSON.stringify({"token":$.token2,"source":"01"}),
     headers: {
       'Host': 'xinruimz-isv.isvjcloud.com',
-      'Sec-Fetch-Site': 'cors',
-      'Origin': 'https://xinruimz-isv.isvjcloud.com',
-      'Source': '02',
-      'Authorization': 'Bearer undefined',
-      'Content-Type': 'application/json;charset=UTF-8',
       'Accept': 'application/x.jd-school-island.v1+json',
-      'User-Agent': $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0") : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0"),
-      'X-Requested-With': 'com.jindong.app.mall',
-      'Sec-Fetch-Site': 'same-origin',
-      'Referer': 'https://xinruimz-isv.isvjcloud.com/logined_jd/',
-      'Accept-Encoding': 'gzip,deflate,br',
+      'Source': '02',
       'Accept-Language': 'zh-cn',
-      'Cookie': cookie + `;IsvToken=${$.isvToken}`
-      //'Cookie': `IsvToken=${$.isvToken};`
+      'Content-Type': 'application/json;charset=utf-8',
+      'Origin': 'https://xinruimz-isv.isvjcloud.com',
+      'User-Agent': $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0") : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0"),
+      'Referer': 'https://xinruimz-isv.isvjcloud.com/logined_jd/',
+      'Authorization': 'Bearer undefined',
+      'Cookie': `IsvToken=${$.isvToken};`
     }
   }
   return new Promise(resolve => {
