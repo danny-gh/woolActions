@@ -1,32 +1,31 @@
 /*
- * @Author: lxk0301 https://github.com/lxk0301 
+ * @Author: lxk0301 https://gitee.com/lxk0301
  * @Date: 2020-11-20 11:42:03 
  * @Last Modified by: lxk0301
- * @Last Modified time: 2020-12-12 12:27:14
+ * @Last Modified time: 2021-3-25 12:27:14
  */
 /*
 点点券，可以兑换无门槛红包（1元，5元，10元，100元，部分红包需抢购）
-APP活动入口：“最新版本京东APP >领券中心/券后9.9>领点点券”页面
-网页入口：https://h5.m.jd.com/babelDiy/Zeus/41Lkp7DumXYCFmPYtU3LTcnTTXTX/index.html
+活动入口：京东APP-领券中心/券后9.9-领点点券
+地址：https://h5.m.jd.com/babelDiy/Zeus/41Lkp7DumXYCFmPYtU3LTcnTTXTX/index.html
 已支持IOS双京东账号,Node.js支持N个京东账号
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 ===============Quantumultx===============
 [task_local]
 #点点券
-10 0,20 * * * https://raw.githubusercontent.com/shuye72/MyActions/main/scripts/jd_necklace.js, tag=点点券, enabled=true
+10 0,20 * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_necklace.js, tag=点点券, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "10 0,20 * * *" script-path=https://raw.githubusercontent.com/shuye72/MyActions/main/scripts/jd_necklace.js,tag=点点券
+cron "10 0,20 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_necklace.js,tag=点点券
 
 ===============Surge=================
-点点券 = type=cron,cronexp="10 0,20 * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/shuye72/MyActions/main/scripts/jd_necklace.js
+点点券 = type=cron,cronexp="10 0,20 * * *",wake-system=1,timeout=3600,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_necklace.js
 
 ============小火箭=========
-点点券 = type=cron,script-path=https://raw.githubusercontent.com/shuye72/MyActions/main/scripts/jd_necklace.js, cronexpr="10 0,20 * * *", timeout=200, enable=true
+点点券 = type=cron,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_necklace.js, cronexpr="10 0,20 * * *", timeout=3600, enable=true
  */
 const $ = new Env('点点券');
-
 let allMessage = ``;
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -42,13 +41,7 @@ if ($.isNode()) {
   })
   if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {};
 } else {
-  let cookiesData = $.getdata('CookiesJD') || "[]";
-  cookiesData = jsonParse(cookiesData);
-  cookiesArr = cookiesData.map(item => item.cookie);
-  cookiesArr.reverse();
-  cookiesArr.push(...[$.getdata('CookieJD2'), $.getdata('CookieJD')]);
-  cookiesArr.reverse();
-  cookiesArr = cookiesArr.filter(item => item !== "" && item !== null && item !== undefined);
+  cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
 
 const JD_API_HOST = 'https://api.m.jd.com/api';
@@ -144,10 +137,9 @@ async function sign() {
 }
 async function reportTask(item = {}) {
   //普通任务
-  if (item['taskType'] !== 3 && item['taskType'] !== 4 && item['taskType'] !== 6) {
-    await necklace_startTask(item.id, 'necklace_reportTask');
-  }
-  if (item['taskType'] === 6) {
+  if (item['taskType'] === 2) await necklace_startTask(item.id, 'necklace_reportTask');
+  //逛很多商品店铺等等任务
+  if (item['taskType'] === 6 || item['taskType'] === 8 || item['taskType'] === 5 || item['taskType'] === 9) {
     //浏览精选活动任务
     await necklace_getTask(item.id);
     $.taskItems = $.taskItems.filter(value => !!value && value['status'] === 0);
