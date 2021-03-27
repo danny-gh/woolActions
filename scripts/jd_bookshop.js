@@ -32,6 +32,7 @@ ADD_CART = $.isNode() ? (process.env.PURCHASE_SHOPS ? process.env.PURCHASE_SHOPS
 let inviteCodes = [
   'bce28a4744ea4cd180fcd5e2d85d20a2@57feb090667f4f2fbf18bc207326136f',
   'bce28a4744ea4cd180fcd5e2d85d20a2@57feb090667f4f2fbf18bc207326136f',
+  'bce28a4744ea4cd180fcd5e2d85d20a2@57feb090667f4f2fbf18bc207326136f',
 ]
 
 if ($.isNode()) {
@@ -65,6 +66,7 @@ if ($.isNode()) {
       $.isLogin = true;
       $.nickName = '';
       message = '';
+      $.exit = false;
       await TotalBean();
       console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
       if (!$.isLogin) {
