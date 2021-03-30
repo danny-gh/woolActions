@@ -30,9 +30,10 @@ ADD_CART = $.isNode() ? (process.env.PURCHASE_SHOPS ? process.env.PURCHASE_SHOPS
 // 加入购物车开关，与东东小窝共享
 
 let inviteCodes = [
-  'bce28a4744ea4cd180fcd5e2d85d20a2@57feb090667f4f2fbf18bc207326136f',
-  'bce28a4744ea4cd180fcd5e2d85d20a2@57feb090667f4f2fbf18bc207326136f',
-  'bce28a4744ea4cd180fcd5e2d85d20a2@57feb090667f4f2fbf18bc207326136f',
+  'bce28a4744ea4cd180fcd5e2d85d20a2@57feb090667f4f2fbf18bc207326136f@069b498fe72246b6bd9d63367e5e67fa',
+  'bce28a4744ea4cd180fcd5e2d85d20a2@57feb090667f4f2fbf18bc207326136f@069b498fe72246b6bd9d63367e5e67fa',
+  'bce28a4744ea4cd180fcd5e2d85d20a2@57feb090667f4f2fbf18bc207326136f@069b498fe72246b6bd9d63367e5e67fa',
+  'bce28a4744ea4cd180fcd5e2d85d20a2@57feb090667f4f2fbf18bc207326136f@069b498fe72246b6bd9d63367e5e67fa',
 ]
 
 if ($.isNode()) {

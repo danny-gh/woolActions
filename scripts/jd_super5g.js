@@ -2,7 +2,7 @@
 5G超级盲盒，可抽奖获得京豆，建议在凌晨0点时运行脚本，白天抽奖基本没有京豆，4小时运行一次收集热力值
 活动地址: https://isp5g.m.jd.com
 活动时间：2021-03-19到2021-04-30
-更新时间：2021-03-19
+更新时间：2021-03-20 08:55
 脚本兼容: QuantumultX, Surge,Loon, JSBox, Node.js
 =================================Quantumultx=========================
 [task_local]
@@ -25,7 +25,7 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let jdNotify = true;//是否关闭通知，false打开通知推送，true关闭通知推送
 //IOS等用户直接用NobyDa的jd cookie
-let cookiesArr = [], cookie = '', message;
+let cookiesArr = [], cookie = '', message, allMessage = '';
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -47,6 +47,7 @@ $.shareId = [];
     $.msg($.name, '活动已结束', `请禁用或删除脚本`);
     return
   }
+  await updateShareCodesCDN()
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -75,9 +76,9 @@ $.shareId = [];
       await getAward();//抽奖
     }
   }
-  //ios端22点通知一次
-  if (new Date().getHours() === 22) {
-    $.msg($.name, '', `任务已做完\n抽奖详情查看 https://isp5g.m.jd.com`, {"open-url": "https://isp5g.m.jd.com"});
+  if (allMessage) {
+    if ($.isNode()) await notify.sendNotify($.name, allMessage);
+    $.msg($.name, '', allMessage, {"open-url": "https://isp5g.m.jd.com"})
   }
   for (let v = 0; v < cookiesArr.length; v++) {
     cookie = cookiesArr[v];
@@ -247,6 +248,8 @@ function getCoin() {
         }
       } catch (e) {
         $.logErr(e, resp);
+      } finally {
+        resolve();
       }
     })
   })
@@ -258,7 +261,6 @@ function taskList() {
       try {
         // console.log('homeGoBrowse', data)
         data = JSON.parse(data);
-        console.log(`请继续等待,正在做任务,不要退出哦`)
         // console.log(`成功领取${data.data}热力值`)
         if (data.code === 200) {
           const { task4, task6, task5, task2, task1 } = data.data;
@@ -275,9 +277,10 @@ function taskList() {
             await strollShop(task2.shopId);
             await taskCoin(task2.type);
           }
-          // if (task6.finishNum < task6.totalNum) {
-          //   await strollMember(task6.venderId);
-          //   await taskCoin(task6.type);
+          // if (task5.finishNum < task5.totalNum) {
+          //   console.log(`\n\n分享好友助力 ${task5.finishNum}/${task5.totalNum}\n\n`)
+          // } else {
+          //   console.log(`\n\n分享好友助力 ${task5.finishNum}/${task5.totalNum}\n\n`)
           // }
           if (task4.state === 2 && task1.state === 2 && task2.state === 2) {
             console.log('\n\n----taskList的任务全部做完了---\n\n')
@@ -398,11 +401,15 @@ async function getAward() {
           console.log(`====抽奖结果====,${JSON.stringify(lotteryRes.data)}`);
           console.log(lotteryRes.data.name);
           console.log(lotteryRes.data.beanNum);
+          if ((lotteryRes.data['prizeId'] && lotteryRes.data['prizeId'] !== '9999') || lotteryRes.data.name === '未中奖') {
+            message += `抽奖获得：${lotteryRes.data.name}\n`;
+          }
         } else if (lotteryRes.code === 4001) {
           console.log(`抽奖失败,${lotteryRes.msg}`);
           break;
         }
       }
+      if (message) allMessage += `京东账号${$.index} ${$.nickName}\n${message}抽奖详情查看 https://isp5g.m.jd.com/#/myPrize${$.index !== cookiesArr.length ? '\n\n' : ''}`
     } else {
       console.log(`目前热力值${total},不够抽奖`)
     }
@@ -503,6 +510,30 @@ function taskurl(url) {
       "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
     }
   }
+}
+function updateShareCodesCDN(url = 'https://gitee.com/Soundantony/updateTeam/raw/master/shareCodes/jd_5g.json') {
+  return new Promise(resolve => {
+    $.get({
+      url ,
+      timeout: 10000,
+      headers:{"User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")}}, async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          $.updatePkActivityIdRes = JSON.parse(data);
+          if ($.updatePkActivityIdRes && $.updatePkActivityIdRes.length) {
+            $.shareId = $.updatePkActivityIdRes;
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
+    })
+  })
 }
 function TotalBean() {
   return new Promise(async resolve => {
