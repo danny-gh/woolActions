@@ -39,14 +39,18 @@ const helpAuthor = false; //帮作者助力 免费拿活动
 const notify = $.isNode() ? require('./sendNotify') : '';
 let jdNotify = true;//是否关闭通知，false打开通知推送，true关闭通知推送
 const randomCount = $.isNode() ? 20 : 5;
-let tuanActiveId = `KfUjD48K74J2JAwvQSyoDw==`;
+let tuanActiveId = `i9ideMF_BUOdVtmbe1pSeA==`;
 const jxOpenUrl = `openjd://virtual?params=%7B%20%22category%22:%20%22jump%22,%20%22des%22:%20%22m%22,%20%22url%22:%20%22https://wqsd.jd.com/pingou/dream_factory/index.html%22%20%7D`;
 let cookiesArr = [], cookie = '', message = '', allMessage = '';
 const inviteCodes = [
-  'tq-a-pKrDkqhrjCclmxjNA==@IYyNbcFvYsWsZtHE2Gt-bA=='
+  'tq-a-pKrDkqhrjCclmxjNA==@IYyNbcFvYsWsZtHE2Gt-bA==@exgLfRJGGiYaiDewwz477w==',
+  'tq-a-pKrDkqhrjCclmxjNA==@IYyNbcFvYsWsZtHE2Gt-bA==@exgLfRJGGiYaiDewwz477w==',
+  'tq-a-pKrDkqhrjCclmxjNA==@IYyNbcFvYsWsZtHE2Gt-bA==@exgLfRJGGiYaiDewwz477w==',
+  'tq-a-pKrDkqhrjCclmxjNA==@IYyNbcFvYsWsZtHE2Gt-bA==@exgLfRJGGiYaiDewwz477w==',
+  'tq-a-pKrDkqhrjCclmxjNA==@IYyNbcFvYsWsZtHE2Gt-bA==@exgLfRJGGiYaiDewwz477w==',
 ];
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-$.tuanIds = ['VGhhmoIhiw3kPFCi8PjOsw==@WJKcz0GBa6tb7-FIFEyC-w=='];
+$.tuanIds = ['Tgigdo2z2BKxY0SdgWTdAg=='];
 $.appId = 10001;
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {

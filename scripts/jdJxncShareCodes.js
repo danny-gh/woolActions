@@ -9,9 +9,11 @@
 // 同一个京东账号的好友助力码用@符号隔开,不同京东账号之间用&符号或者换行隔开,下面给一个示例
 // 如: 京东账号1的shareCode1@京东账号1的shareCode2&京东账号2的shareCode1@京东账号2的shareCode2
 let JxncShareCodes = [
-  '{"smp":"bdb5f21c3ad466844ddc2dd9e10c3f12","active":"jdnc_1_ganju210315_2","joinnum":1}@{"smp":"786ccdc5c3081198afead058df33360a","active":"jdnc_1_1yuanjikuai210305_2","joinnum":1}',//账号一的好友shareCode,不同好友中间用@符号隔开
-  '{"smp":"bdb5f21c3ad466844ddc2dd9e10c3f12","active":"jdnc_1_ganju210315_2","joinnum":1}@{"smp":"786ccdc5c3081198afead058df33360a","active":"jdnc_1_1yuanjikuai210305_2","joinnum":1}',//账号二的好友shareCode，不同好友中间用@符号隔开
-  '{"smp":"bdb5f21c3ad466844ddc2dd9e10c3f12","active":"jdnc_1_ganju210315_2","joinnum":1}@{"smp":"786ccdc5c3081198afead058df33360a","active":"jdnc_1_1yuanjikuai210305_2","joinnum":1}'//账号二的好友shareCode，不同好友中间用@符号隔开
+  '{"smp":"bdb5f21c3ad466844ddc2dd9e10c3f12","active":"jdnc_1_ganju210315_2","joinnum":1}@{"smp":"786ccdc5c3081198afead058df33360a","active":"jdnc_1_1yuanjikuai210305_2","joinnum":1}@{"smp":"020e1494347bfa5570d0b59b02e49989","active":"jdnc_1_xiacheng210315_2","joinnum":1}',
+  '{"smp":"bdb5f21c3ad466844ddc2dd9e10c3f12","active":"jdnc_1_ganju210315_2","joinnum":1}@{"smp":"786ccdc5c3081198afead058df33360a","active":"jdnc_1_1yuanjikuai210305_2","joinnum":1}@{"smp":"020e1494347bfa5570d0b59b02e49989","active":"jdnc_1_xiacheng210315_2","joinnum":1}',
+  '{"smp":"bdb5f21c3ad466844ddc2dd9e10c3f12","active":"jdnc_1_ganju210315_2","joinnum":1}@{"smp":"786ccdc5c3081198afead058df33360a","active":"jdnc_1_1yuanjikuai210305_2","joinnum":1}@{"smp":"020e1494347bfa5570d0b59b02e49989","active":"jdnc_1_xiacheng210315_2","joinnum":1}',
+  '{"smp":"bdb5f21c3ad466844ddc2dd9e10c3f12","active":"jdnc_1_ganju210315_2","joinnum":1}@{"smp":"786ccdc5c3081198afead058df33360a","active":"jdnc_1_1yuanjikuai210305_2","joinnum":1}@{"smp":"020e1494347bfa5570d0b59b02e49989","active":"jdnc_1_xiacheng210315_2","joinnum":1}',
+  '{"smp":"bdb5f21c3ad466844ddc2dd9e10c3f12","active":"jdnc_1_ganju210315_2","joinnum":1}@{"smp":"786ccdc5c3081198afead058df33360a","active":"jdnc_1_1yuanjikuai210305_2","joinnum":1}@{"smp":"020e1494347bfa5570d0b59b02e49989","active":"jdnc_1_xiacheng210315_2","joinnum":1}',
 ]
 // 判断github action里面是否有京喜农场助力码
 if (process.env.JXNC_SHARECODES) {
