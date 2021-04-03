@@ -20,9 +20,13 @@ cron "30,31 20-23/1 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/
 const $ = new Env('超级直播间红包雨');
 let allMessage = '';
 let bodyList = {
-  "30": {
-    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV842&uuid=8888888&client=apple&clientVersion=9.4.1&undefined",
-    "body": "body=%7B%22liveId%22%3A%223761428%22%7D"
+  "2": {
+    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1617325217027&sign=a164d2ff76cf8d0f32b6f51487b0335f&sv=102",
+    "body": "body=%7B%22liveId%22%3A%223804885%22%7D"
+  },
+  "6": {
+    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1617325216041&sign=e725cf0ce846f0ad6b0761b3c3c56c42&sv=111",
+    "body": "body=%7B%22liveId%22%3A%223820176%22%7D"
   }
 }
 let ids = {
@@ -69,7 +73,7 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
-      $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+      $.UserName = decodeURIComponent(cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1])
       $.index = i + 1;
       $.isLogin = true;
       $.nickName = '';
