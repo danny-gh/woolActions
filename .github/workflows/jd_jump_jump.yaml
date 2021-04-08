@@ -6,7 +6,7 @@ name: 母婴跳一跳
 on:
     workflow_dispatch:
     schedule:
-        - cron: "5 11,15,19,22 * * *"
+        - cron: "25 */4 * * *"
     watch:
         types: [started]
     repository_dispatch:
