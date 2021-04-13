@@ -101,27 +101,31 @@ const weAppUrl = 'https://draw.jdfcloud.com//pet';
       $.done();
     })
 async function jdJoy() {
-  await getPetTaskConfig();
-  if ($.getPetTaskConfigRes.success) {
-    if ($.isNode()) {
-      if (process.env.JOY_FEED_COUNT) {
-        if ([10, 20, 40, 80].indexOf(process.env.JOY_FEED_COUNT * 1) > -1) {
-          FEED_NUM = process.env.JOY_FEED_COUNT ? process.env.JOY_FEED_COUNT * 1 : FEED_NUM;
-        } else {
-          console.log(`您输入的 JOY_FEED_COUNT 为非法数字，请重新输入`);
+  try {
+    await getPetTaskConfig();
+    if ($.getPetTaskConfigRes.success) {
+      if ($.isNode()) {
+        if (process.env.JOY_FEED_COUNT) {
+          if ([10, 20, 40, 80].indexOf(process.env.JOY_FEED_COUNT * 1) > -1) {
+            FEED_NUM = process.env.JOY_FEED_COUNT ? process.env.JOY_FEED_COUNT * 1 : FEED_NUM;
+          } else {
+            console.log(`您输入的 JOY_FEED_COUNT 为非法数字，请重新输入`);
+          }
         }
       }
+      await feedPets(FEED_NUM);//喂食
+      await Promise.all([
+        petTask(),
+        appPetTask()
+      ])
+      await deskGoodsTask();//限时货柜
+      await enterRoom();
+      await joinTwoPeopleRun()//参加双人赛跑
+    } else {
+      message += `${$.getPetTaskConfigRes.errorMessage}`;
     }
-    await feedPets(FEED_NUM);//喂食
-    await Promise.all([
-      petTask(),
-      appPetTask()
-    ])
-    await deskGoodsTask();//限时货柜
-    await enterRoom();
-    await joinTwoPeopleRun()//参加双人赛跑
-  } else {
-    message += `${$.getPetTaskConfigRes.errorMessage}`;
+  } catch (e) {
+    $.logErr(e)
   }
 }
 //逛商品得100积分奖励任务
@@ -653,6 +657,7 @@ function appGetPetTaskConfig() {
 function feedPets(feedNum) {
   return new Promise(resolve => {
     console.log(`您设置的喂食数量:${FEED_NUM}g\n`);
+    if (FEED_NUM === 0) { console.log(`跳出喂食`);resolve();return }
     console.log(`实际的喂食数量:${feedNum}g\n`);
     // const url = `${weAppUrl}/feed?feedCount=${feedNum}&reqSource=weapp`;
     const host = `draw.jdfcloud.com`;
@@ -1027,7 +1032,7 @@ function TotalBean() {
               return
             }
             if (data['retcode'] === 0) {
-              $.nickName = data['base'].nickname;
+              $.nickName = (data['base'] && data['base'].nickname) || $.UserName;
             } else {
               $.nickName = $.UserName
             }
