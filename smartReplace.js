@@ -261,7 +261,7 @@ async function downloader_jd() {
             "USER_AGENTS"
         );
     }
-    if (remoteContent.indexOf("new Env('京东极速版')") > 0) {
+    if (remoteContent.indexOf("new Env('京东极速版')") > 0 || remoteContent.indexOf("new Env('京东极速版红包')") > 0 ) {
         await download(
             "https://github.com/danny-gh/woolActions/raw/main/scripts/JS_USER_AGENTS.js",
             "./JS_USER_AGENTS.js",
