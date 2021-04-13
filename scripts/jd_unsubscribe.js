@@ -40,8 +40,8 @@ if ($.isNode()) {
   cookiesArr = cookiesArr.filter(item => item !== "" && item !== null && item !== undefined);
 }
 const jdNotify = $.getdata('jdUnsubscribeNotify');//是否关闭通知，false打开通知推送，true关闭通知推送
-let goodPageSize = $.getdata('jdUnsubscribePageSize') || 50;// 运行一次取消多少个已关注的商品。数字0表示不取关任何商品
-let shopPageSize = $.getdata('jdUnsubscribeShopPageSize') || 50;// 运行一次取消多少个已关注的店铺。数字0表示不取关任何店铺
+let goodPageSize = $.getdata('jdUnsubscribePageSize') || 100;// 运行一次取消多少个已关注的商品。数字0表示不取关任何商品
+let shopPageSize = $.getdata('jdUnsubscribeShopPageSize') || 100;// 运行一次取消多少个已关注的店铺。数字0表示不取关任何店铺
 let stopGoods = $.getdata('jdUnsubscribeStopGoods') || '';//遇到此商品不再进行取关，此处内容需去商品详情页（自营处）长按拷贝商品信息
 let stopShop = $.getdata('jdUnsubscribeStopShop') || '';//遇到此店铺不再进行取关，此处内容请尽量从头开始输入店铺名称
 const JD_API_HOST = 'https://wq.jd.com/fav';
@@ -135,7 +135,7 @@ function unsubscribeGoods() {
 function getFollowGoods() {
   return new Promise((resolve) => {
     const option = {
-      url: `${JD_API_HOST}/comm/FavCommQueryFilter?cp=1&pageSize=${goodPageSize}&category=0&promote=0&cutPrice=0&coupon=0&stock=0&areaNo=1_72_4139_0&sceneval=2&g_login_type=1&callback=jsonpCBKB&g_ty=ls`,
+      url: `${JD_API_HOST}/comm/FavCommQueryFilter?cp=1&pageSize=${goodPageSize}&_=${Date.now()}&category=0&promote=0&cutPrice=0&coupon=0&stock=0&areaNo=1_72_4139_0&sceneval=2&g_login_type=1&callback=jsonpCBKB&g_ty=ls`,
       headers: {
         "Host": "wq.jd.com",
         "Accept": "*/*",
@@ -226,7 +226,7 @@ function unsubscribeShops() {
 function getFollowShops() {
   return new Promise((resolve) => {
     const option = {
-      url: `${JD_API_HOST}/shop/QueryShopFavList?cp=1&pageSize=${shopPageSize}&sceneval=2&g_login_type=1&callback=jsonpCBKA&g_ty=ls`,
+      url: `${JD_API_HOST}/shop/QueryShopFavList?cp=1&pageSize=${shopPageSize}&_=${Date.now()}&sceneval=2&g_login_type=1&callback=jsonpCBKA&g_ty=ls`,
       headers: {
         "Host": "wq.jd.com",
         "Accept": "*/*",
