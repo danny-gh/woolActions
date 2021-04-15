@@ -9,6 +9,11 @@
 // 如: 京东账号1的shareCode1@京东账号1的shareCode2&京东账号2的shareCode1@京东账号2的shareCode2
 let shareCodes = [
   'tq-a-pKrDkqhrjCclmxjNA==@IYyNbcFvYsWsZtHE2Gt-bA==@exgLfRJGGiYaiDewwz477w==@nOCXWc8fOOUlREMW-DRFng==@exgLfRJGGiYaiDewwz477w==',//账号一的好友shareCode,不同好友中间用@符号隔开
+  'tq-a-pKrDkqhrjCclmxjNA==@IYyNbcFvYsWsZtHE2Gt-bA==@exgLfRJGGiYaiDewwz477w==@nOCXWc8fOOUlREMW-DRFng==@exgLfRJGGiYaiDewwz477w==',//账号一的好友shareCode,不同好友中间用@符号隔开
+  'tq-a-pKrDkqhrjCclmxjNA==@IYyNbcFvYsWsZtHE2Gt-bA==@exgLfRJGGiYaiDewwz477w==@nOCXWc8fOOUlREMW-DRFng==@exgLfRJGGiYaiDewwz477w==',//账号一的好友shareCode,不同好友中间用@符号隔开
+  'tq-a-pKrDkqhrjCclmxjNA==@IYyNbcFvYsWsZtHE2Gt-bA==@exgLfRJGGiYaiDewwz477w==@nOCXWc8fOOUlREMW-DRFng==@exgLfRJGGiYaiDewwz477w==',//账号一的好友shareCode,不同好友中间用@符号隔开
+  'tq-a-pKrDkqhrjCclmxjNA==@IYyNbcFvYsWsZtHE2Gt-bA==@exgLfRJGGiYaiDewwz477w==@nOCXWc8fOOUlREMW-DRFng==@exgLfRJGGiYaiDewwz477w==',//账号一的好友shareCode,不同好友中间用@符号隔开
+  'tq-a-pKrDkqhrjCclmxjNA==@IYyNbcFvYsWsZtHE2Gt-bA==@exgLfRJGGiYaiDewwz477w==@nOCXWc8fOOUlREMW-DRFng==@exgLfRJGGiYaiDewwz477w==',//账号一的好友shareCode,不同好友中间用@符号隔开
 ]
 // 判断github action里面是否有京喜工厂互助码
 if (process.env.DREAM_FACTORY_SHARE_CODES) {

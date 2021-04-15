@@ -29,11 +29,12 @@ let jdNotify = true;//是否关闭通知，false打开通知推送，true关闭�
 let cookiesArr = [], cookie = '', message;
 let helpAuthor = true;
 const inviteCodes = [
-  `Z1luL6jjOP0n8A@eU9YabjjM_wi8j3UnXUS1g@IhMxbO20ZP8n-W66iw@eU9YMpHDLpZmtTGEjy1t@eU9YBK_FJ7xvsCSpkQpy`,
-  `Z1luL6jjOP0n8A@eU9YabjjM_wi8j3UnXUS1g@IhMxbO20ZP8n-W66iw@eU9YMpHDLpZmtTGEjy1t@eU9YBK_FJ7xvsCSpkQpy`,
-  `Z1luL6jjOP0n8A@eU9YabjjM_wi8j3UnXUS1g@IhMxbO20ZP8n-W66iw@eU9YMpHDLpZmtTGEjy1t@eU9YBK_FJ7xvsCSpkQpy`,
-  `Z1luL6jjOP0n8A@eU9YabjjM_wi8j3UnXUS1g@IhMxbO20ZP8n-W66iw@eU9YMpHDLpZmtTGEjy1t@eU9YBK_FJ7xvsCSpkQpy`,
-  `Z1luL6jjOP0n8A@eU9YabjjM_wi8j3UnXUS1g@IhMxbO20ZP8n-W66iw@eU9YMpHDLpZmtTGEjy1t@eU9YBK_FJ7xvsCSpkQpy`
+  `Z1luL6jjOP0n8A@eU9YabjjM_wi8j3UnXUS1g@IhMxbO20ZP8n-W66iw@eU9YMpHDLpZmtTGEjy1t@eU9YBK_FJ7xvsCSpkQpy@eU9Ya-vnZf9w9T_WzHYbhw`,
+  `Z1luL6jjOP0n8A@eU9YabjjM_wi8j3UnXUS1g@IhMxbO20ZP8n-W66iw@eU9YMpHDLpZmtTGEjy1t@eU9YBK_FJ7xvsCSpkQpy@eU9Ya-vnZf9w9T_WzHYbhw`,
+  `Z1luL6jjOP0n8A@eU9YabjjM_wi8j3UnXUS1g@IhMxbO20ZP8n-W66iw@eU9YMpHDLpZmtTGEjy1t@eU9YBK_FJ7xvsCSpkQpy@eU9Ya-vnZf9w9T_WzHYbhw`,
+  `Z1luL6jjOP0n8A@eU9YabjjM_wi8j3UnXUS1g@IhMxbO20ZP8n-W66iw@eU9YMpHDLpZmtTGEjy1t@eU9YBK_FJ7xvsCSpkQpy@eU9Ya-vnZf9w9T_WzHYbhw`,
+  `Z1luL6jjOP0n8A@eU9YabjjM_wi8j3UnXUS1g@IhMxbO20ZP8n-W66iw@eU9YMpHDLpZmtTGEjy1t@eU9YBK_FJ7xvsCSpkQpy@eU9Ya-vnZf9w9T_WzHYbhw`,
+  `Z1luL6jjOP0n8A@eU9YabjjM_wi8j3UnXUS1g@IhMxbO20ZP8n-W66iw@eU9YMpHDLpZmtTGEjy1t@eU9YBK_FJ7xvsCSpkQpy@eU9Ya-vnZf9w9T_WzHYbhw`,
 ]
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
