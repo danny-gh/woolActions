@@ -39,8 +39,12 @@ if ($.isNode()) {
 }
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 const inviteCodes = [
-    `ACjVSmK-QzzYAFWX83XxNnQ@S5KkcH1lQpB6qW3uX06Fu@ACjBfn6iTzTYBAGaXnQ@A3avtRgYKGqKz3e15@A373QSgwwGJOy3Oh-CfTM@S5KkcRBoRp1SEJBP1nKIDdg@S5KkcRR1K8wXXJxKiwaIIdA@Sv_h6Rhof_FzTIxyb1A@S5KkcNmJNlxOBRUCU9axO@A06fNRgYIG7Kz3ul3Ctb-Q-ggGzUB`,
-    `ACjVSmK-QzzYAFWX83XxNnQ@S5KkcH1lQpB6qW3uX06Fu@ACjBfn6iTzTYBAGaXnQ@A3avtRgYKGqKz3e15@A373QSgwwGJOy3Oh-CfTM@S5KkcRBoRp1SEJBP1nKIDdg@S5KkcRR1K8wXXJxKiwaIIdA@Sv_h6Rhof_FzTIxyb1A@S5KkcNmJNlxOBRUCU9axO@A06fNRgYIG7Kz3ul3Ctb-Q-ggGzUB`,
+    `S-r8qA1pIq1XWIQ@S5KkcRUpIoFTTI0n1wvELdA@Sv_V1QB8f91fWKBqb1A@S5KkcHmNovT6XZEWl0Kl0@S5KkcKF1utBSeYVCIzo5r@S5KkcRxlM9leBJEv3k_ICJQ`,
+    `S-r8qA1pIq1XWIQ@S5KkcRUpIoFTTI0n1wvELdA@Sv_V1QB8f91fWKBqb1A@S5KkcHmNovT6XZEWl0Kl0@S5KkcKF1utBSeYVCIzo5r@S5KkcRxlM9leBJEv3k_ICJQ`,
+    `S-r8qA1pIq1XWIQ@S5KkcRUpIoFTTI0n1wvELdA@Sv_V1QB8f91fWKBqb1A@S5KkcHmNovT6XZEWl0Kl0@S5KkcKF1utBSeYVCIzo5r@S5KkcRxlM9leBJEv3k_ICJQ`,
+    `S-r8qA1pIq1XWIQ@S5KkcRUpIoFTTI0n1wvELdA@Sv_V1QB8f91fWKBqb1A@S5KkcHmNovT6XZEWl0Kl0@S5KkcKF1utBSeYVCIzo5r@S5KkcRxlM9leBJEv3k_ICJQ`,
+    `S-r8qA1pIq1XWIQ@S5KkcRUpIoFTTI0n1wvELdA@Sv_V1QB8f91fWKBqb1A@S5KkcHmNovT6XZEWl0Kl0@S5KkcKF1utBSeYVCIzo5r@S5KkcRxlM9leBJEv3k_ICJQ`,
+    `S-r8qA1pIq1XWIQ@S5KkcRUpIoFTTI0n1wvELdA@Sv_V1QB8f91fWKBqb1A@S5KkcHmNovT6XZEWl0Kl0@S5KkcKF1utBSeYVCIzo5r@S5KkcRxlM9leBJEv3k_ICJQ`,
 ]
 let nowTimes = new Date(new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 + 8 * 60 * 60 * 1000);
 !(async () => {
@@ -91,6 +95,7 @@ let nowTimes = new Date(new Date().getTime() + new Date().getTimezoneOffset() * 
           if(!$.canHelp) break
         }
       }
+        /*
       if ($.canHelp) {
         console.log(`开始账号内部互助 赚京豆-瓜分京豆 活动，如有剩余则给wuzhi03助力`)
         for (let j = 0; j < $.authorTuanList.length; ++j) {
@@ -99,6 +104,7 @@ let nowTimes = new Date(new Date().getTime() + new Date().getTimezoneOffset() * 
           if(!$.canHelp) break
         }
       }
+        */
     }
   }
 })()
@@ -115,7 +121,7 @@ async function jdWish() {
   $.hasOpen = false;
   $.assistStatus = 0;
   await getTaskList(true)
-  //await getUserTuanInfo()
+  await getUserTuanInfo()
   if (!$.tuan && $.assistStatus === 3 && $.canStartNewAssist) {
     console.log(`准备再次开团`)
     await openTuan()
