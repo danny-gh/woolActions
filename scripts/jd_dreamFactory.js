@@ -142,7 +142,7 @@ async function jdDreamFactory() {
     await QueryAllTuan();
     await exchangeProNotify();
     await showMsg();
-    if (helpAuthor === true) await shuye72();
+    //if (helpAuthor === true) await shuye72();
   } catch (e) {
     $.logErr(e)
   }
