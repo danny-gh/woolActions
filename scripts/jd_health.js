@@ -26,7 +26,12 @@ let cookiesArr = [],
   cookie = "",
   message;
 const inviteCodes = [
-  ""
+  "T014-r8qA1pIq1XWIQCjVfnoaW5kRrbA@T0225KkcRUpIoFTTI0n1wvELdACjVfnoaW5kRrbA@T018v_V1QB8f91fWKBqb1ACjVfnoaW5kRrbA@T0205KkcHmNovT6XZEWl0Kl0CjVfnoaW5kRrbA@T0205KkcKF1utBSeYVCIzo5rCjVfnoaW5kRrbA@T0225KkcRxlM9leBJEv3k_ICJQCjVfnoaW5kRrbA",
+  "T014-r8qA1pIq1XWIQCjVfnoaW5kRrbA@T0225KkcRUpIoFTTI0n1wvELdACjVfnoaW5kRrbA@T018v_V1QB8f91fWKBqb1ACjVfnoaW5kRrbA@T0205KkcHmNovT6XZEWl0Kl0CjVfnoaW5kRrbA@T0205KkcKF1utBSeYVCIzo5rCjVfnoaW5kRrbA@T0225KkcRxlM9leBJEv3k_ICJQCjVfnoaW5kRrbA",
+  "T014-r8qA1pIq1XWIQCjVfnoaW5kRrbA@T0225KkcRUpIoFTTI0n1wvELdACjVfnoaW5kRrbA@T018v_V1QB8f91fWKBqb1ACjVfnoaW5kRrbA@T0205KkcHmNovT6XZEWl0Kl0CjVfnoaW5kRrbA@T0205KkcKF1utBSeYVCIzo5rCjVfnoaW5kRrbA@T0225KkcRxlM9leBJEv3k_ICJQCjVfnoaW5kRrbA",
+  "T014-r8qA1pIq1XWIQCjVfnoaW5kRrbA@T0225KkcRUpIoFTTI0n1wvELdACjVfnoaW5kRrbA@T018v_V1QB8f91fWKBqb1ACjVfnoaW5kRrbA@T0205KkcHmNovT6XZEWl0Kl0CjVfnoaW5kRrbA@T0205KkcKF1utBSeYVCIzo5rCjVfnoaW5kRrbA@T0225KkcRxlM9leBJEv3k_ICJQCjVfnoaW5kRrbA",
+  "T014-r8qA1pIq1XWIQCjVfnoaW5kRrbA@T0225KkcRUpIoFTTI0n1wvELdACjVfnoaW5kRrbA@T018v_V1QB8f91fWKBqb1ACjVfnoaW5kRrbA@T0205KkcHmNovT6XZEWl0Kl0CjVfnoaW5kRrbA@T0205KkcKF1utBSeYVCIzo5rCjVfnoaW5kRrbA@T0225KkcRxlM9leBJEv3k_ICJQCjVfnoaW5kRrbA",
+  "T014-r8qA1pIq1XWIQCjVfnoaW5kRrbA@T0225KkcRUpIoFTTI0n1wvELdACjVfnoaW5kRrbA@T018v_V1QB8f91fWKBqb1ACjVfnoaW5kRrbA@T0205KkcHmNovT6XZEWl0Kl0CjVfnoaW5kRrbA@T0205KkcKF1utBSeYVCIzo5rCjVfnoaW5kRrbA@T0225KkcRxlM9leBJEv3k_ICJQCjVfnoaW5kRrbA",
 ]
 const randomCount = $.isNode() ? 20 : 5;
 if ($.isNode()) {
@@ -285,10 +290,12 @@ function shareCodesFormat() {
       const tempIndex = $.index > inviteCodes.length ? (inviteCodes.length - 1) : ($.index - 1);
       $.newShareCodes = inviteCodes[tempIndex].split('@');
     }
+      /*
     const readShareCodeRes = await readShareCode();
     if (readShareCodeRes && readShareCodeRes.code === 200) {
       $.newShareCodes = [...new Set([...$.newShareCodes, ...(readShareCodeRes.data || [])])];
     }
+    */
     console.log(`第${$.index}个京东账号将要助力的好友${JSON.stringify($.newShareCodes)}`)
     resolve();
   })
