@@ -181,7 +181,7 @@ if ($.isNode()) {
   $.selfCodes = []
   for (let i = 0; i < cookiesArr.length; i++) {
     if (i%2===0) {
-      $.nextCode = ["EdLPh8A6X5G1iWXu-uPYfA==", "nCQQXQHKGjPCb7jkd8q2U-aCTjZMxL3s"];
+      $.nextCode = ["WYJ0yHMAY9EyV87yr81V6at9zd5YaBeE"];
       $.nextCode = $.nextCode[randomNumber(0, $.nextCode.length)];
     }
     if (cookiesArr[i]) {
@@ -748,10 +748,12 @@ function shareCodesFormat() {
       const tempIndex = $.index > inviteCodes.length ? (inviteCodes.length - 1) : ($.index - 1);
       $.newShareCodes = inviteCodes[tempIndex].split('@');
     }
+      /*
     const readShareCodeRes = await readShareCode();
     if (readShareCodeRes && readShareCodeRes.code === 200) {
       $.newShareCodes = [...new Set([...$.newShareCodes, ...(readShareCodeRes.data || [])])];
     }
+      */
     console.log(`第${$.index}个京东账号将要助力的好友${JSON.stringify($.newShareCodes)}`)
     resolve();
   })
