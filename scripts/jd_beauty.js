@@ -322,7 +322,7 @@ async function mr() {
               console.log(`去收取${vo.data.material_name}`)
               client.send(`{"msg":{"type":"action","args":{"position":"${vo.data.position}","replace_material":false},"action":"material_fetch_v2"}}`)
               client.send(`{"msg":{"type":"action","args":{},"action":"to_employee"}}`)
-              $.pos.push(vo.data?.position)
+              $.pos.push(vo.data.position)
             }
           } else {
             if (vo.data && vo.data.valid_electric > 0) {
