@@ -64,7 +64,9 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
       if ($.accountCheck) {
         await jdBeauty();
       }
-      if($.accountCheck){ helpInfo = $.helpInfo;}
+      if ($.accountCheck) {
+        helpInfo = $.helpInfo;
+      }
     }
   }
 })()
@@ -75,7 +77,7 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
     $.done();
   })
 
-async function accountCheck(){
+async function accountCheck() {
   $.hasDone = false;
   console.log(`***检测账号是否黑号***`);
   await getIsvToken()
@@ -86,10 +88,9 @@ async function accountCheck(){
     process.exit(0);
     return
   }
-  let client = new WebSocket(`wss://xinruimz-isv.isvjcloud.com/wss/?token=${$.token}`,null,{
-    headers:{
-      //'user-agent': "jdapp;android;9.5.0;5.1.1;8363331303230333330383934363-73D2138356239366237373730303;network/wifi;model/vivo X7;addressid/4092959325;aid/e3378926a846c4f7;oaid/;osVer/22;appBuild/87697;partner/vivo;eufv/1;jdSupportDarkMode/0;Mozilla/5.0 (Linux; Android 5.1.1; vivo X7 Build/LMY47V; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/66.0.3359.126 MQQBrowser/6.2 TBS/044942 Mobile Safari/537.36",
-      'User-Agent': "jdapp;android;9.4.6;7.1.2;3353135363432313633343137303-13D2038303032373433393335323;network/wifi;model/SM-G977N;addressid/2932795941;aid/6a0b5401f199e6a9;oaid/;osVer/25;appBuild/87373;partner/jdtopc;eufv/1;jdSupportDarkMode/0;Mozilla/5.0 (Linux; Android 7.1.2; SM-G977N Build/LMY48Z; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/75.0.3770.143 Mobile Safari/537.36",
+  let client = new WebSocket(`wss://xinruimz-isv.isvjcloud.com/wss/?token=${$.token}`, null, {
+    headers: {
+      'user-agent': "jdapp;android;9.5.0;5.1.1;8363331303230333330383934363-73D2138356239366237373730303;network/wifi;model/vivo X7;addressid/4092959325;aid/e3378926a846c4f7;oaid/;osVer/22;appBuild/87697;partner/vivo;eufv/1;jdSupportDarkMode/0;Mozilla/5.0 (Linux; Android 5.1.1; vivo X7 Build/LMY47V; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/66.0.3359.126 MQQBrowser/6.2 TBS/044942 Mobile Safari/537.36",
     }
   });
   client.onopen = async () => {
@@ -99,22 +100,23 @@ async function accountCheck(){
     client.send(`{"msg":{"type":"action","args":{"source":1},"action":"get_user"}}`);
   };
   client.onmessage = async function (e) {
-    if(e.data !== 'pong' && e.data && safeGet(e.data)){
+    if (e.data !== 'pong' && e.data && safeGet(e.data)) {
       let vo = JSON.parse(e.data);
       if (vo.action === "_init_") {
         let vo = JSON.parse(e.data);
-        if(vo.msg === "风险用户"){
-          $.accountCheck=false;
+        if (vo.msg === "风险用户") {
+          $.accountCheck = false;
           // $.init=true;
           client.close();
-          console.log(`${vo.msg}，跳过此账号`)};
+          console.log(`${vo.msg}，跳过此账号`)
+        }
       } else if (vo.action === "get_user") {
         // $.init=true;
-        $.accountCheck=true;
+        $.accountCheck = true;
         client.close();
         console.log(`${vo.msg}，账号正常`);
       }
-    };
+    }
     client.onclose = (e) => {
       $.hasDone = true;
       // console.log(client.readyState);
@@ -149,8 +151,7 @@ async function mr() {
   $.needs = []
   let client = new WebSocket(`wss://xinruimz-isv.isvjcloud.com/wss/?token=${$.token}`,null,{
     headers:{
-      //'user-agent': "jdapp;android;9.5.0;5.1.1;8363331303230333330383934363-73D2138356239366237373730303;network/wifi;model/vivo X7;addressid/4092959325;aid/e3378926a846c4f7;oaid/;osVer/22;appBuild/87697;partner/vivo;eufv/1;jdSupportDarkMode/0;Mozilla/5.0 (Linux; Android 5.1.1; vivo X7 Build/LMY47V; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/66.0.3359.126 MQQBrowser/6.2 TBS/044942 Mobile Safari/537.36",
-      'User-Agent': "jdapp;android;9.4.6;7.1.2;3353135363432313633343137303-13D2038303032373433393335323;network/wifi;model/SM-G977N;addressid/2932795941;aid/6a0b5401f199e6a9;oaid/;osVer/25;appBuild/87373;partner/jdtopc;eufv/1;jdSupportDarkMode/0;Mozilla/5.0 (Linux; Android 7.1.2; SM-G977N Build/LMY48Z; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/75.0.3770.143 Mobile Safari/537.36",
+      'user-agent': "jdapp;android;9.5.0;5.1.1;8363331303230333330383934363-73D2138356239366237373730303;network/wifi;model/vivo X7;addressid/4092959325;aid/e3378926a846c4f7;oaid/;osVer/22;appBuild/87697;partner/vivo;eufv/1;jdSupportDarkMode/0;Mozilla/5.0 (Linux; Android 5.1.1; vivo X7 Build/LMY47V; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/66.0.3359.126 MQQBrowser/6.2 TBS/044942 Mobile Safari/537.36",
     }
   })
   console.log(`wss://xinruimz-isv.isvjcloud.com/wss/?token=${$.token}`)
@@ -162,7 +163,7 @@ async function mr() {
       client.send(`ping`)
       await $.wait(1000)
     }
-    console.log(helpInfo);
+    console.log('helpInfo', helpInfo);
     for (let help of helpInfo) {
       client.send(help);
     }
@@ -194,6 +195,7 @@ async function mr() {
     await $.wait(1000)
     // 获得福利中心
     client.send(`{"msg":{"type":"action","args":{},"action":"get_benefit"}}`)
+    client.send(`{"msg":{"type":"action","args":{},"action":"collect_coins"}}`);
   };
 
   client.onclose = () => {
@@ -317,17 +319,17 @@ async function mr() {
           }
           break
         case "produce_position_info_v2":
-          // console.log(`${Boolean(vo.data)};${vo.data.material_name !== ''}`);
+          // console.log(`${Boolean(vo?.data)};${vo?.data?.material_name !== ''}`);
           if (vo.data && vo.data.material_name !== '') {
-            console.log(`【${vo.data.position}】上正在生产【${vo.data.material_name}】，可收取 ${vo.data.produce_num} 份`)
+            console.log(`【${vo?.data?.position}】上正在生产【${vo?.data?.material_name}】，可收取 ${vo.data.produce_num} 份`)
             if (new Date().getTime() > vo.data.procedure.end_at) {
-              console.log(`去收取${vo.data.material_name}`)
-              client.send(`{"msg":{"type":"action","args":{"position":"${vo.data.position}","replace_material":false},"action":"material_fetch_v2"}}`)
+              console.log(`去收取${vo?.data?.material_name}`)
+              client.send(`{"msg":{"type":"action","args":{"position":"${vo?.data?.position}","replace_material":false},"action":"material_fetch_v2"}}`)
               client.send(`{"msg":{"type":"action","args":{},"action":"to_employee"}}`)
-              $.pos.push(vo.data.position)
+              $.pos.push(vo?.data?.position)
             }
           } else {
-            if (vo.data && vo.data.valid_electric > 0) {
+            if (vo?.data && vo.data.valid_electric > 0) {
               console.log(`【${vo.data.position}】上尚未开始生产`)
               let ma
               console.log(`$.needs:${JSON.stringify($.needs)}`);
@@ -356,7 +358,7 @@ async function mr() {
           }
           break
         case "material_produce_v2":
-          console.log(`【${vo.data.position}】上开始生产${vo.data.material_name}`)
+          console.log(`【${vo.data.position}】上开始生产${vo?.data?.material_name}`)
           client.send(`{"msg":{"type":"action","args":{},"action":"to_employee"}}`)
           $.pos.push(vo.data.position)
           break
@@ -435,6 +437,14 @@ async function mr() {
             console.log(`生产信息获取失败，错误信息${vo.msg}`)
           }
           break
+        case "collect_coins":
+          if (vo.code === '200' || vo.code === 200) {
+            // console.log(`product_produce:${JSON.stringify(vo)}`)
+            console.log(`收取成功，获得${vo['data']['coins']}美妆币，当前总美妆币：${vo['data']['user_coins']}\n`)
+          } else {
+            console.log(`收取美妆币失败，错误信息${vo.msg}`)
+          }
+          break
         case "product_producing":
           if (vo.code === '200' || vo.code === 200) {
             for (let product of vo.data) {
@@ -511,8 +521,7 @@ function getIsvToken() {
     headers: {
       'Host': 'api.m.jd.com',
       'accept': '*/*',
-      //'user-agent': 'JD4iPhone/167490 (iPhone; iOS 14.2; Scale/3.00)',
-      'User-Agent': "jdapp;android;9.4.6;7.1.2;3353135363432313633343137303-13D2038303032373433393335323;network/wifi;model/SM-G977N;addressid/2932795941;aid/6a0b5401f199e6a9;oaid/;osVer/25;appBuild/87373;partner/jdtopc;eufv/1;jdSupportDarkMode/0;Mozilla/5.0 (Linux; Android 7.1.2; SM-G977N Build/LMY48Z; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/75.0.3770.143 Mobile Safari/537.36",
+      'user-agent': 'JD4iPhone/167490 (iPhone; iOS 14.2; Scale/3.00)',
       'accept-language': 'zh-Hans-JP;q=1, en-JP;q=0.9, zh-Hant-TW;q=0.8, ja-JP;q=0.7, en-US;q=0.6',
       'content-type': 'application/x-www-form-urlencoded',
       'Cookie': cookie
@@ -547,8 +556,7 @@ function getIsvToken2() {
     headers: {
       'Host': 'api.m.jd.com',
       'accept': '*/*',
-      //'user-agent': 'JD4iPhone/167490 (iPhone; iOS 14.2; Scale/3.00)',
-      'User-Agent': "jdapp;android;9.4.6;7.1.2;3353135363432313633343137303-13D2038303032373433393335323;network/wifi;model/SM-G977N;addressid/2932795941;aid/6a0b5401f199e6a9;oaid/;osVer/25;appBuild/87373;partner/jdtopc;eufv/1;jdSupportDarkMode/0;Mozilla/5.0 (Linux; Android 7.1.2; SM-G977N Build/LMY48Z; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/75.0.3770.143 Mobile Safari/537.36",
+      'user-agent': 'JD4iPhone/167490 (iPhone; iOS 14.2; Scale/3.00)',
       'accept-language': 'zh-Hans-JP;q=1, en-JP;q=0.9, zh-Hant-TW;q=0.8, ja-JP;q=0.7, en-US;q=0.6',
       'content-type': 'application/x-www-form-urlencoded',
       'Cookie': cookie
@@ -587,8 +595,7 @@ function getToken() {
       'Accept-Language': 'zh-cn',
       'Content-Type': 'application/json;charset=utf-8',
       'Origin': 'https://xinruimz-isv.isvjcloud.com',
-      'User-Agent': "jdapp;android;9.4.6;7.1.2;3353135363432313633343137303-13D2038303032373433393335323;network/wifi;model/SM-G977N;addressid/2932795941;aid/6a0b5401f199e6a9;oaid/;osVer/25;appBuild/87373;partner/jdtopc;eufv/1;jdSupportDarkMode/0;Mozilla/5.0 (Linux; Android 7.1.2; SM-G977N Build/LMY48Z; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/75.0.3770.143 Mobile Safari/537.36",
-      //'User-Agent': "jdapp;android;9.5.2;10;2353932316161666-6313563383338363;network/wifi;model/EVR-AL00;addressid/4032588137;aid/2592aaaf61e38386;oaid/1d53eb96-e090-4538-ab6f-0e5e3d4664b7;osVer/29;appBuild/87971;partner/huawei;eufv/1;jdSupportDarkMode/0;Mozilla/5.0 (Linux; Android 10; EVR-AL00 Build/HUAWEIEVR-AL00; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/77.0.3865.120 MQQBrowser/6.2 TBS/045230 Mobile Safari/537.36",
+      'User-Agent': "jdapp;android;9.5.2;10;2353932316161666-6313563383338363;network/wifi;model/EVR-AL00;addressid/4032588137;aid/2592aaaf61e38386;oaid/1d53eb96-e090-4538-ab6f-0e5e3d4664b7;osVer/29;appBuild/87971;partner/huawei;eufv/1;jdSupportDarkMode/0;Mozilla/5.0 (Linux; Android 10; EVR-AL00 Build/HUAWEIEVR-AL00; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/77.0.3865.120 MQQBrowser/6.2 TBS/045230 Mobile Safari/537.36",
       'Referer': 'https://xinruimz-isv.isvjcloud.com/logined_jd/',
       'Authorization': 'Bearer undefined',
       'Cookie': `IsvToken=${$.isvToken};`
@@ -636,8 +643,7 @@ function TotalBean() {
         "Connection": "keep-alive",
         "Cookie": cookie,
         "Referer": "https://wqs.jd.com/my/jingdou/my.shtml?sceneval=2",
-        //"User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1") : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
-        'User-Agent': "jdapp;android;9.4.6;7.1.2;3353135363432313633343137303-13D2038303032373433393335323;network/wifi;model/SM-G977N;addressid/2932795941;aid/6a0b5401f199e6a9;oaid/;osVer/25;appBuild/87373;partner/jdtopc;eufv/1;jdSupportDarkMode/0;Mozilla/5.0 (Linux; Android 7.1.2; SM-G977N Build/LMY48Z; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/75.0.3770.143 Mobile Safari/537.36",
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1") : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
       }
     }
     $.post(options, (err, resp, data) => {
