@@ -732,6 +732,7 @@ function DrawProductionStagePrize() {
 async function PickUp(encryptPin = $.encryptPin, help = false) {
   $.pickUpMyselfComponent = true;
   const GetUserComponentRes = await GetUserComponent(encryptPin, 1500);
+  console.log(`${JSON.stringify(GetUserComponentRes)}`)
   if (GetUserComponentRes && GetUserComponentRes['ret'] === 0) {
     const { componentList } = GetUserComponentRes['data'];
     if (componentList && componentList.length <= 0) {
