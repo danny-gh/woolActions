@@ -21,9 +21,17 @@ cron "0,30,31 20-23/1 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/ra
 const $ = new Env('超级直播间红包雨');
 let allMessage = '', id = 'RRA4RhWMc159kA62qLbaEa88evE7owb';
 let bodyList = {
-  "11": {
-    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1620614253070&sign=813e1c41e645e117616678bfc34c88fe&sv=111",
-    "body": "body=%7B%22liveId%22%3A%224085977%22%7D"
+  "18": {
+    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1621330562019&sign=481b81691d4fcd79420b7f521b5982b0&sv=120",
+    "body": "body=%7B%22liveId%22%3A%224132669%22%7D"
+  },
+  "21": {
+    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1621330561038&sign=41bf65ac4312f0c1804fbd951c6fb343&sv=111",
+    "body": "body=%7B%22liveId%22%3A%224169074%22%7D"
+  },
+  "28": {
+    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1621330560056&sign=458d98149378130df0600edbae373c75&sv=111",
+    "body": "body=%7B%22liveId%22%3A%224170786%22%7D"
   }
 }
 let ids = {}
@@ -50,20 +58,24 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {"open-url": "https://bean.m.jd.com/"});
     return;
   }
-  console.log('下一场超级直播间时间:05月07日  20:00，直播间地址：https://h5.m.jd.com/dev/3pbY8ZuCx4ML99uttZKLHC2QcAMn/live.html?id=4033765\n' +
-      '下一场超级直播间时间:04月30日  20:00，直播间地址：https://h5.m.jd.com/dev/3pbY8ZuCx4ML99uttZKLHC2QcAMn/live.html?id=4010816')
+  console.log('下一场超级直播间时间:05月28日  20:00，直播间地址：https://h5.m.jd.com/dev/3pbY8ZuCx4ML99uttZKLHC2QcAMn/live.html?id=4170786\n' +
+      '下一场超级直播间时间:05月21日  20:00，直播间地址：https://h5.m.jd.com/dev/3pbY8ZuCx4ML99uttZKLHC2QcAMn/live.html?id=4169074\n' +
+      '下一场超级直播间时间:05月18日  20:00，直播间地址：https://h5.m.jd.com/dev/3pbY8ZuCx4ML99uttZKLHC2QcAMn/live.html?id=4132669')
+  $.newAcids = [];
   await getRedRain();
 /*
   let nowTs = new Date().getTime()
   if (!($.st <= nowTs && nowTs < $.ed)) {
-    $.log(`\n远程红包雨配置获取错误，从本地读取配置`)
-    let hour = (new Date().getUTCHours() + 8) %24
-    if (ids[hour]){
-      $.activityId = ids[hour]
-      $.log(`本地红包雨配置获取成功`)
-    } else{
+    $.log(`\n远程红包雨配置获取错误，尝试从本地读取配置`);
+    $.http.get({url: `https://purge.jsdelivr.net/gh/gitupdate/updateTeam@master/redrain.json`}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
+    let hour = (new Date().getUTCHours() + 8) % 24;
+    let redIds = await getRedRainIds();
+    if (!redIds) redIds = await getRedRainIds('https://cdn.jsdelivr.net/gh/gitupdate/updateTeam@master/redrain.json');
+    $.newAcids = [...(redIds || [])];
+    if ($.newAcids && $.newAcids.length) {
+      $.log(`本地红包雨配置获取成功，ID为：${JSON.stringify($.newAcids)}\n`)
+    } else {
       $.log(`无法从本地读取配置，请检查运行时间(注：非红包雨时间执行出现此提示请忽略！！！！！！！！！！！)`)
-      $.log(`非红包雨期间出现上面提示请忽略。红包雨期间会正常，此脚本提issue打死！！！！！！！！！！！)`)
       return
     }
   } else{
@@ -135,7 +147,8 @@ function getRedRain() {
               let act = data.data.iconArea.filter(vo=>vo['type']==="platform_red_packege_rain")[0]
               if (act) {
                 let url = act.data.activityUrl
-                $.activityId = url.substr(url.indexOf("id=") + 3)
+                $.activityId = url.substr(url.indexOf("id=") + 3);
+                $.newAcids.push($.activityId);
                 $.st = act.startTime
                 $.ed = act.endTime
                 console.log($.activityId)
@@ -143,10 +156,10 @@ function getRedRain() {
                 console.log(`下一场红包雨开始时间：${new Date($.st)}`)
                 console.log(`下一场红包雨结束时间：${new Date($.ed)}`)
               } else {
-                console.log(`暂无红包雨`)
+                console.log(`\n暂无超级直播间红包雨`)
               }
             } else {
-              console.log(`暂无红包雨`)
+              console.log(`\n暂无超级直播间红包雨`)
             }
           }
         }
@@ -159,9 +172,9 @@ function getRedRain() {
   })
 }
 
-function receiveRedRain() {
+function receiveRedRain(actId) {
   return new Promise(resolve => {
-    const body = {"actId": $.activityId};
+    const body = { actId };
     $.get(taskUrl('noahRedRainLottery', body), (err, resp, data) => {
       try {
         if (err) {
@@ -176,7 +189,7 @@ function receiveRedRain() {
               message += `领取成功，获得 ${(data.lotteryResult.jPeasList[0].quantity)}京豆`
               allMessage += `京东账号${$.index}${$.nickName || $.UserName}\n领取成功，获得 ${(data.lotteryResult.jPeasList[0].quantity)}京豆${$.index !== cookiesArr.length ? '\n\n' : ''}`;
             } else if (data.subCode === '8') {
-              console.log(`今日次数已满`)
+              console.log(`领取失败：本场已领过`)
               message += `领取失败，本场已领过`;
             } else {
               console.log(`异常：${JSON.stringify(data)}`)
@@ -191,10 +204,11 @@ function receiveRedRain() {
     })
   })
 }
+
 function taskGetUrl(url, body) {
   return {
     url: url,
-    body:body,
+    body: body,
     headers: {
       "Accept": "*/*",
       "Accept-Encoding": "gzip, deflate, br",
@@ -236,9 +250,45 @@ function taskUrl(function_id, body = {}) {
       "Host": "api.m.jd.com",
       "Referer": `https://h5.m.jd.com/active/redrain/index.html?id=${$.activityId}&lng=0.000000&lat=0.000000&sid=&un_area=`,
       "Cookie": cookie,
-      "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
+      "User-Agent": "JD4iPhone/9.4.5 CFNetwork/1209 Darwin/20.2.0"
     }
   }
+}
+
+function getRedRainIds(url = "https://raw.githubusercontent.com/gitupdate/updateTeam/master/redrain.json") {
+  return new Promise(async resolve => {
+    const options = {
+      url: `${url}?${new Date()}`, "timeout": 10000, headers: {
+        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
+      }
+    };
+    if ($.isNode() && process.env.TG_PROXY_HOST && process.env.TG_PROXY_PORT) {
+      const tunnel = require("tunnel");
+      const agent = {
+        https: tunnel.httpsOverHttp({
+          proxy: {
+            host: process.env.TG_PROXY_HOST,
+            port: process.env.TG_PROXY_PORT * 1
+          }
+        })
+      }
+      Object.assign(options, { agent })
+    }
+    $.get(options, async (err, resp, data) => {
+      try {
+        if (err) {
+        } else {
+          if (data) data = JSON.parse(data)
+        }
+      } catch (e) {
+        // $.logErr(e, resp)
+      } finally {
+        resolve(data);
+      }
+    })
+    await $.wait(10000)
+    resolve([]);
+  })
 }
 
 function TotalBean() {

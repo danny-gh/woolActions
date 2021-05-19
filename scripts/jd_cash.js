@@ -107,8 +107,8 @@ async function jdCash() {
     for (let item of ["-1", "0", "1", "2", "3"]) {
       $.canLoop = true;
       if ($.canLoop) {
-        for (let i = 0; i < 4; i++) {
-          await exchange2(item);//兑换200京豆(2元红包换200京豆，一周四次。)
+        for (let i = 0; i < 5; i++) {
+          await exchange2(item);//兑换200京豆(2元红包换200京豆，一周五次。)
         }
         if (!$.canLoop) {
           console.log(`已找到符合的兑换条件，跳出\n`);
@@ -269,7 +269,7 @@ function getReward(source = 1) {
             data = JSON.parse(data);
             if (data.code === 0 && data.data.bizCode === 0) {
               console.log(`领奖成功，${data.data.result.shareRewardTip}【${data.data.result.shareRewardAmount}】`)
-              allMessage += `京东账号${$.index}${$.nickName}\n领奖成功，${data.data.result.shareRewardTip}【${data.data.result.shareRewardAmount}】\n${message}${$.index !== cookiesArr.length ? '\n\n' : ''}`;
+              message += `领奖成功，${data.data.result.shareRewardTip}【${data.data.result.shareRewardAmount}元】\n`;
               // console.log(data.data.result.taskInfos)
             } else {
               // console.log(`领奖失败，${data.data.bizMsg}`)
