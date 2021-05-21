@@ -85,6 +85,7 @@ const JD_API_HOST = 'https://api.m.jd.com/';
         let code = $.newShareCodes[0];
         await help(code[0], code[1]);
       }
+        /*
       if (helpAuthor && $.authorCode) {
         console.log(`\n【抢京豆】${$.UserName} 去帮助wuzhi03`)
         for (let code of $.authorCode) {
@@ -103,6 +104,7 @@ const JD_API_HOST = 'https://api.m.jd.com/';
           }
         }
       }
+      */
       for (let j = 1; j < $.newShareCodes.length; j++) {
         console.log(`【抢京豆】${$.UserName} 去助力账号 ${j + 1}`)
         let code = $.newShareCodes[j];
