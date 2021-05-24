@@ -1,36 +1,38 @@
 /*
 超级直播间红包雨
-下一场超级直播间时间:04月28日  20:00，直播间地址：https://h5.m.jd.com/dev/3pbY8ZuCx4ML99uttZKLHC2QcAMn/live.html?id=3932303
-下一场超级直播间时间:04月23日  20:00，直播间地址：https://h5.m.jd.com/dev/3pbY8ZuCx4ML99uttZKLHC2QcAMn/live.html?id=3934999
+更新时间：2021-05-24
+下一场超级直播间时间:06月04日  18:00，直播间地址：https://h5.m.jd.com/dev/3pbY8ZuCx4ML99uttZKLHC2QcAMn/live.html?id=4228810
+下一场超级直播间时间:05月28日  20:00，直播间地址：https://h5.m.jd.com/dev/3pbY8ZuCx4ML99uttZKLHC2QcAMn/live.html?id=4170786
+下一场超级直播间时间:05月25日  20:00，直播间地址：https://h5.m.jd.com/dev/3pbY8ZuCx4ML99uttZKLHC2QcAMn/live.html?id=4190964
 脚本兼容: Quantumult X, Surge, Loon, JSBox, Node.js
 ==============Quantumult X==============
 [task_local]
 #超级直播间红包雨
-0,30,31 20-23/1 * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_live_redrain.js, tag=超级直播间红包雨, enabled=true
+0,30 0-23/1 * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_live_redrain.js, tag=超级直播间红包雨, enabled=true
 
 ==============Loon==============
 [Script]
-cron "0,30,31 20-23/1 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_live_redrain.js,tag=超级直播间红包雨
+cron "0,30 0-23/1 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_live_redrain.js,tag=超级直播间红包雨
 
 ================Surge===============
-超级直播间红包雨 = type=cron,cronexp="0,30,31 20-23/1 * * *",wake-system=1,timeout=3600,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_live_redrain.js
+超级直播间红包雨 = type=cron,cronexp="0,30 0-23/1 * * *",wake-system=1,timeout=3600,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_live_redrain.js
 
 ===============小火箭==========
-超级直播间红包雨 = type=cron,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_live_redrain.js, cronexpr="0,30,31 20-23/1 * * *", timeout=3600, enable=true
+超级直播间红包雨 = type=cron,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_live_redrain.js, cronexpr="0,30 0-23/1 * * *", timeout=3600, enable=true
 */
 const $ = new Env('超级直播间红包雨');
-let allMessage = '', id = 'RRA4RhWMc159kA62qLbaEa88evE7owb';
+let allMessage = '', id = 'RRA2cUocg5uYEyuKpWNdh4qE4NW1bN2';
 let bodyList = {
-  "18": {
-    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1621330562019&sign=481b81691d4fcd79420b7f521b5982b0&sv=120",
-    "body": "body=%7B%22liveId%22%3A%224132669%22%7D"
+  "4": {
+    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1621831484005&sign=611323ba368a60ac6a80728596ee4521&sv=111",
+    "body": "body=%7B%22liveId%22%3A%224228810%22%7D"
   },
-  "21": {
-    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1621330561038&sign=41bf65ac4312f0c1804fbd951c6fb343&sv=111",
-    "body": "body=%7B%22liveId%22%3A%224169074%22%7D"
+  "25": {
+    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1621831485068&sign=dcf7a7add2434ff89cbc14b2e0a904b4&sv=120",
+    "body": "body=%7B%22liveId%22%3A%224190964%22%7D"
   },
   "28": {
-    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1621330560056&sign=458d98149378130df0600edbae373c75&sv=111",
+    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1621831484087&sign=728056a3a19c5a34170e930ac8d04309&sv=111",
     "body": "body=%7B%22liveId%22%3A%224170786%22%7D"
   }
 }
@@ -58,12 +60,12 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {"open-url": "https://bean.m.jd.com/"});
     return;
   }
-  console.log('下一场超级直播间时间:05月28日  20:00，直播间地址：https://h5.m.jd.com/dev/3pbY8ZuCx4ML99uttZKLHC2QcAMn/live.html?id=4170786\n' +
-      '下一场超级直播间时间:05月21日  20:00，直播间地址：https://h5.m.jd.com/dev/3pbY8ZuCx4ML99uttZKLHC2QcAMn/live.html?id=4169074\n' +
-      '下一场超级直播间时间:05月18日  20:00，直播间地址：https://h5.m.jd.com/dev/3pbY8ZuCx4ML99uttZKLHC2QcAMn/live.html?id=4132669')
+  console.log('下一场超级直播间时间:06月04日  18:00，直播间地址：https://h5.m.jd.com/dev/3pbY8ZuCx4ML99uttZKLHC2QcAMn/live.html?id=4228810\n' +
+      '下一场超级直播间时间:05月28日  20:00，直播间地址：https://h5.m.jd.com/dev/3pbY8ZuCx4ML99uttZKLHC2QcAMn/live.html?id=4170786\n' +
+      '下一场超级直播间时间:05月25日  20:00，直播间地址：https://h5.m.jd.com/dev/3pbY8ZuCx4ML99uttZKLHC2QcAMn/live.html?id=4190964')
   $.newAcids = [];
   await getRedRain();
-/*
+
   let nowTs = new Date().getTime()
   if (!($.st <= nowTs && nowTs < $.ed)) {
     $.log(`\n远程红包雨配置获取错误，尝试从本地读取配置`);
@@ -78,32 +80,44 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
       $.log(`无法从本地读取配置，请检查运行时间(注：非红包雨时间执行出现此提示请忽略！！！！！！！！！！！)`)
       return
     }
-  } else{
+    // if (ids[hour]) {
+    //   $.activityId = ids[hour]
+    //   $.log(`本地红包雨配置获取成功，ID为：${$.activityId}\n`)
+    // } else {
+    //   $.log(`无法从本地读取配置，请检查运行时间(注：非红包雨时间执行出现此提示请忽略！！！！！！！！！！！)`)
+    //   $.log(`非红包雨期间出现上面提示请忽略。红包雨期间会正常，此脚本提issue打死！！！！！！！！！！！)`)
+    //   return
+    // }
+  } else {
     $.log(`远程红包雨配置获取成功`)
   }
-  */
-  for (let i = 0; i < cookiesArr.length; i++) {
-    if (cookiesArr[i]) {
-      cookie = cookiesArr[i];
-      $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
-      $.index = i + 1;
-      $.isLogin = true;
-      $.nickName = '';
-      message = '';
-      await TotalBean();
-      console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
-      if (!$.isLogin) {
-        $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/`, {"open-url": "https://bean.m.jd.com/"});
-
-        if ($.isNode()) {
-          await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
+  for (let id of $.newAcids) {
+    // $.activityId = id;
+    if (!id) continue;
+    console.log(`\n今日${new Date().getHours()}点ID：${id
+    }\n`);
+    for (let i = 0; i < cookiesArr.length; i++) {
+      if (cookiesArr[i]) {
+        cookie = cookiesArr[i];
+        $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+        $.index = i + 1;
+        $.isLogin = true;
+        $.nickName = '';
+        message = '';
+        await TotalBean();
+        console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
+        if (!$.isLogin) {
+          $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/`, {"open-url": "https://bean.m.jd.com/"});
+          if ($.isNode()) {
+            await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
+          }
+          continue
         }
-        continue
+        let nowTs = new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 + 8 * 60 * 60 * 1000
+        // console.log(nowTs, $.startTime, $.endTime)
+        // await showMsg();
+        if (id) await receiveRedRain(id);
       }
-      let nowTs = new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 + 8 * 60 * 60 * 1000
-      // console.log(nowTs, $.startTime, $.endTime)
-      await receiveRedRain();
-      // await showMsg();
     }
   }
   if (allMessage) {
@@ -111,12 +125,12 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     $.msg($.name, '', allMessage);
   }
 })()
-  .catch((e) => {
-    $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
-  })
-  .finally(() => {
-    $.done();
-  })
+    .catch((e) => {
+      $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
+    })
+    .finally(() => {
+      $.done();
+    })
 
 function showMsg() {
   return new Promise(resolve => {
@@ -127,9 +141,9 @@ function showMsg() {
 
 function getRedRain() {
   let body
-  if(bodyList.hasOwnProperty(new Date().getDate())) {
+  if (bodyList.hasOwnProperty(new Date().getDate())) {
     body = bodyList[new Date().getDate()]
-  }else{
+  } else {
     return
   }
   return new Promise(resolve => {
@@ -142,9 +156,8 @@ function getRedRain() {
           if (safeGet(data)) {
             data = JSON.parse(data);
             if (data.data && data.data.iconArea) {
-              console.log(data.data.iconArea.filter(vo=>vo['type']==='anchor_darw_lottery').length &&
-                data.data.iconArea.filter(vo=>vo['type']==='anchor_darw_lottery')[0].data.lotteryId)
-              let act = data.data.iconArea.filter(vo=>vo['type']==="platform_red_packege_rain")[0]
+              // console.log(data.data.iconArea.filter(vo => vo['type'] === 'anchor_darw_lottery').length && data.data.iconArea.filter(vo => vo['type'] === 'anchor_darw_lottery')[0].data.lotteryId)
+              let act = data.data.iconArea.filter(vo => vo['type'] === "platform_red_packege_rain")[0]
               if (act) {
                 let url = act.data.activityUrl
                 $.activityId = url.substr(url.indexOf("id=") + 3);
