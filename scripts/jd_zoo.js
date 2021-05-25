@@ -220,7 +220,9 @@ async function zoo() {
     //助力
     for (let i = 0; i < $.pkInviteList.length; i++) {
       $.pkInviteId = $.pkInviteList[i];
+      console.log(`${$.UserName}去助力 助力码${$.pkInviteId}`);
       await takePostRequest('pkHelp');
+      await $.wait(2000);
     }
   } catch (e) {
     $.logErr(e)
@@ -385,6 +387,9 @@ async function dealReturn(type, data) {
       if (data.code === 0) {
         console.log(`PK互助码：${data.data.result.groupInfo.groupAssistInviteId}`);
         $.pkHomeData = data.data;
+        if (data.data.result.groupInfo.groupAssistInviteId) {
+          $.pkInviteList.push(data.data.result.groupInfo.groupAssistInviteId);
+        }
       }
       break;
     case 'zoo_pk_getTaskDetail':
