@@ -87,6 +87,12 @@ if ($.isNode()) {
       await takePostRequest('help');
       await $.wait(2000);
     }
+    for (let k = 0; k < $.pkInviteList.length; k++) {
+      $.pkInviteId = $.pkInviteList[k];
+      console.log(`${$.UserName}去助力 PK助力码${$.pkInviteId}`);
+      await takePostRequest('pkHelp');
+      await $.wait(2000);
+    }
   }
 })()
     .catch((e) => {
@@ -218,12 +224,14 @@ async function zoo() {
     //     }
     // }
     //助力
+      /*
     for (let i = 0; i < $.pkInviteList.length; i++) {
       $.pkInviteId = $.pkInviteList[i];
       console.log(`${$.UserName}去助力 助力码${$.pkInviteId}`);
       await takePostRequest('pkHelp');
       await $.wait(2000);
     }
+      */
   } catch (e) {
     $.logErr(e)
   }
