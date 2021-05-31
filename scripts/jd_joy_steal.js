@@ -1,6 +1,6 @@
 /*
  * @Author: LXK9301 https://github.com/LXK9301
- * @Date: 2020-07-16 18:54:16
+ * @Date: 2021-02-19 18:54:16
  * @Last Modified by: LXK9301
  * @Last Modified time: 2021-2-19 10:22:37
  */
@@ -47,11 +47,17 @@ if ($.isNode()) {
   })
   if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {};
 } else {
-  cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
+  let cookiesData = $.getdata('CookiesJD') || "[]";
+  cookiesData = jsonParse(cookiesData);
+  cookiesArr = cookiesData.map(item => item.cookie);
+  cookiesArr.reverse();
+  cookiesArr.push(...[$.getdata('CookieJD2'), $.getdata('CookieJD')]);
+  cookiesArr.reverse();
+  cookiesArr = cookiesArr.filter(item => item !== "" && item !== null && item !== undefined);
 }
 let message = '', subTitle = '';
 
-let jdNotify = true;//是否开启静默运行，false关闭静默运行(即通知)，true打开静默运行(即不通知)
+let jdNotify = false;//是否开启静默运行，false关闭静默运行(即通知)，true打开静默运行(即不通知)
 let jdJoyHelpFeed = true;//是否给好友喂食，false为不给喂食，true为给好友喂食，默认不给好友喂食
 let jdJoyStealCoin = true;//是否偷好友积分与狗粮，false为否，true为是，默认是偷
 const JD_API_HOST = 'https://jdjoy.jd.com/pet';
@@ -139,7 +145,7 @@ async function jdJoySteal() {
           console.log(`偷好友积分 开始查询第${i}页好友\n`);
           await getFriends(i);
           $.allFriends = $.getFriendsData.datas;
-          if ($.allFriends) await stealFriendCoinFun();
+          await stealFriendCoinFun();
         }
         for (let i = 1; i <= new Array(lastPage).fill('').length; i++) {
           if ($.stealStatus === 'chance_full') {
@@ -149,7 +155,7 @@ async function jdJoySteal() {
             }
             break
           }
-          if (nowTimes.getHours() < 6 && nowTimes.getHours() >= 0) {
+          if (nowTimes.getHours() < 6 && nowTimes.getHours() > 0) {
             $.log('未到早餐时间, 暂不能偷好友狗粮\n')
             break
           }
@@ -168,7 +174,7 @@ async function jdJoySteal() {
           console.log(`偷好友狗粮 开始查询第${i}页好友\n`);
           await getFriends(i);
           $.allFriends = $.getFriendsData.datas;
-          if ($.allFriends) await stealFriendsFood();
+          await stealFriendsFood();
         }
         for (let i = 1; i <= new Array(lastPage).fill('').length; i++) {
           if ($.help_feed >= 200 || ($.helpFeedStatus && $.helpFeedStatus === 'chance_full')) {
@@ -188,7 +194,7 @@ async function jdJoySteal() {
           console.log(`帮好友喂食 开始查询第${i}页好友\n`);
           await getFriends(i);
           $.allFriends = $.getFriendsData.datas;
-          if ($.allFriends) await helpFriendsFeed();
+          await helpFriendsFeed();
         }
       }
     } else {
@@ -292,6 +298,7 @@ function getFriends(currentPage = '1') {
   return new Promise(resolve => {
     let opt = {
       url: `//jdjoy.jd.com/common/pet/h5/getFriends?itemsPerPage=20&currentPage=${currentPage * 1}&reqSource=h5`,
+      //url: `//jdjoy.jd.com/common/pet/getFriends?itemsPerPage=20&currentPage=${currentPage * 1}&reqSource=h5`,
       // url: `//draw.jdfcloud.com/common/pet/getPetTaskConfig?reqSource=h5`,
       method: "GET",
       data: {},
@@ -340,7 +347,7 @@ async function stealFriendCoin(friendPin) {
   // console.log(`进入好友 ${friendPin}的房间`)
   const enterFriendRoomRes = await enterFriendRoom(friendPin);
   if (enterFriendRoomRes) {
-    const { friendHomeCoin } =  enterFriendRoomRes.data;
+    const { friendHomeCoin } =  enterFriendRoomRes.data||{};
     if (friendHomeCoin > 0) {
       //领取好友积分
       console.log(`好友 ${friendPin}的房间可领取积分${friendHomeCoin}个\n`)
@@ -369,8 +376,8 @@ function enterFriendRoom(friendPin) {
           // console.log('进入好友房间', JSON.parse(data))
           if (data) {
             data = JSON.parse(data);
-            console.log(`可偷狗粮：${data.data.stealFood}`)
-            console.log(`可偷积分：${data.data.friendHomeCoin}`)
+            console.log(`可偷狗粮：${(data.data||{}).stealFood}`)
+            console.log(`可偷积分：${(data.data||{}).friendHomeCoin}`)
           } else {
             console.log(`京豆api返回数据为空，请检查自身原因`)
           }
@@ -583,11 +590,7 @@ function TotalBean() {
               $.isLogin = false; //cookie过期
               return
             }
-            if (data['retcode'] === 0) {
-              $.nickName = data['base'].nickname;
-            } else {
-              $.nickName = $.UserName
-            }
+            $.nickName = (data['base'] && data['base'].nickname) || $.UserName;
           } else {
             console.log(`京东服务器返回空数据`)
           }
