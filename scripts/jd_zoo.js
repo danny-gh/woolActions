@@ -9,22 +9,22 @@ PK互助：内部账号自行互助(排名靠前账号得到的机会多),多余
 地图任务：已添加，下午2点到5点执行,抽奖已添加(基本都是优惠券)
 金融APP任务：已完成
 活动时间：2021-05-24至2021-06-20
-脚本更新时间：2021-05-31 23:00
+脚本更新时间：2021-06-03 9:30
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 ===================quantumultx================
 [task_local]
 #618动物联萌
-13 * * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_zoo.js, tag=618动物联萌, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+33 0,6-23/2 * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_zoo.js, tag=618动物联萌, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 =====================Loon================
 [Script]
-cron "13 * * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_zoo.js, tag=618动物联萌
+cron "33 0,6-23/2 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_zoo.js, tag=618动物联萌
 
 ====================Surge================
-618动物联萌 = type=cron,cronexp="13 * * * *",wake-system=1,timeout=3600,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_zoo.js
+618动物联萌 = type=cron,cronexp="33 0,6-23/2 * * *",wake-system=1,timeout=3600,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_zoo.js
 
 ============小火箭=========
-618动物联萌 = type=cron,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_zoo.js, cronexpr="13 * * * *", timeout=3600, enable=true
+618动物联萌 = type=cron,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_zoo.js, cronexpr="33 0,6-23/2 * * *", timeout=3600, enable=true
  */
 const $ = new Env('618动物联萌');
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -61,7 +61,7 @@ if ($.isNode()) {
       '地图任务：已添加，下午2点到5点执行,抽奖已添加\n' +
       '金融APP任务：已完成\n' +
       '活动时间：2021-05-24至2021-06-20\n' +
-      '脚本更新时间：2021-05-31 23:00\n'
+      '脚本更新时间：2021-06-03 9:30\n'
       );
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
@@ -87,11 +87,11 @@ if ($.isNode()) {
   }
     /*
   let res = [], res2 = [], res3 = [];
-  res3 = await getAuthorShareCode('https://raw.githubusercontent.com/gitupdate/updateTeam/master/shareCodes/jd_zoo.json');
-  if (!res3) await getAuthorShareCode('https://cdn.jsdelivr.net/gh/gitupdate/updateTeam@master/shareCodes/jd_zoo.json')
-  if (new Date().getUTCHours() + 8 >= 17) {
+  res3 = await getAuthorShareCode('https://raw.githubusercontent.com/inoyna11/Write-files/master/shareCodes/jd_zoo.json');
+  if (!res3) await getAuthorShareCode('https://raw.githubusercontent.com/inoyna11/Write-files/master/shareCodes/jd_zoo.json')
+  if (new Date().getHours()>= 9) {
     res = await getAuthorShareCode() || [];
-    res2 = await getAuthorShareCode('http://cdn.trueorfalse.top/e528ffae31d5407aac83b8c37a4c86bc/') || [];
+    res2 = await getAuthorShareCode('https://raw.githubusercontent.com/1277002811/JDbot/master/shareCodes/pk.json') || [];
   }
   if (pKHelpAuthorFlag) {
     $.innerPkInviteList = getRandomArrayElements([...$.innerPkInviteList, ...res, ...res2, ...res3], [...$.innerPkInviteList, ...res, ...res2, ...res3].length);
@@ -413,7 +413,7 @@ async function takePostRequest(type) {
       myRequest = await getPostRequest(`zoo_getHomeData`, body);
       break;
     case 'zoo_collectProduceScore':
-      body = getBody(type);
+      body = getPostBody(type);
       myRequest = await getPostRequest(`zoo_collectProduceScore`, body);
       break;
     case 'zoo_getFeedDetail':
@@ -425,7 +425,7 @@ async function takePostRequest(type) {
       myRequest = await getPostRequest(`zoo_getTaskDetail`, body);
       break;
     case 'zoo_collectScore':
-      body = getBody(type);
+      body = getPostBody(type);
       //console.log(body);
       myRequest = await getPostRequest(`zoo_collectScore`, body);
       break;
@@ -434,7 +434,7 @@ async function takePostRequest(type) {
       myRequest = await getPostRequest(`zoo_raise`, body);
       break;
     case 'help':
-      body = getBody(type);
+      body = getPostBody(type);
       //console.log(body);
       myRequest = await getPostRequest(`zoo_collectScore`, body);
       break;
@@ -447,7 +447,7 @@ async function takePostRequest(type) {
       myRequest = await getPostRequest(`zoo_pk_getTaskDetail`, body);
       break;
     case 'zoo_pk_collectScore':
-      body = getBody(type);
+      body = getPostBody(type);
       //console.log(body);
       myRequest = await getPostRequest(`zoo_pk_collectScore`, body);
       break;
@@ -456,7 +456,7 @@ async function takePostRequest(type) {
       myRequest = await getPostRequest(`zoo_pk_doPkSkill`, body);
       break;
     case 'pkHelp':
-      body = getBody(type);
+      body = getPostBody(type);
       myRequest = await getPostRequest(`zoo_pk_assistGroup`, body);
       break;
     case 'zoo_getSignHomeData':
@@ -476,7 +476,7 @@ async function takePostRequest(type) {
       myRequest = await getPostRequest(`zoo_shopLotteryInfo`,body);
       break;
     case 'zoo_bdCollectScore':
-      body = getBody(type);
+      body = getPostBody(type);
       myRequest = await getPostRequest(`zoo_bdCollectScore`,body);
       break;
     case 'qryCompositeMaterials':
@@ -496,7 +496,7 @@ async function takePostRequest(type) {
       myRequest = await getPostRequest(`zoo_myMap`,body);
       break;
     case 'zoo_getWelfareScore':
-      body = getBody(type);
+      body = getPostBody(type);
       myRequest = await getPostRequest(`zoo_getWelfareScore`,body);
       break;
     case 'jdjrTaskDetail':
@@ -508,7 +508,7 @@ async function takePostRequest(type) {
       myRequest = await getPostRequest(`acceptTask`,body);
       break;
     case 'add_car':
-      body = getBody(type);
+      body = getPostBody(type);
       myRequest = await getPostRequest(`zoo_collectScore`,body);
       break;
     default:
@@ -818,22 +818,20 @@ async function getPostRequest(type, body) {
   return {url: url, method: method, headers: headers, body: body};
 }
 
-function getBody(type) {
-  let rnd = Math.floor(1e6 + 9e6 * Math.random()).toString()
-  let ss = JSON.stringify({"extraData" : {"log": "-1", "sceneid": "QD216hPageh5"}, "secretp": $.secretp, "random": rnd.toString()});
+function getPostBody(type) {
   let taskBody = '';
   if (type === 'help') {
-    taskBody = `functionId=zoo_collectScore&body=${JSON.stringify({"taskId": 2,"inviteId":$.inviteId,"actionType":1,"ss" :ss})}&client=wh5&clientVersion=1.0.0`
+    taskBody = `functionId=zoo_collectScore&body=${JSON.stringify({"taskId": 2,"inviteId":$.inviteId,"actionType":1,"ss" :getBody()})}&client=wh5&clientVersion=1.0.0`
   } else if (type === 'pkHelp') {
-    taskBody = `functionId=zoo_pk_assistGroup&body=${JSON.stringify({"confirmFlag": 1,"inviteId" : $.pkInviteId,"ss" : ss})}&client=wh5&clientVersion=1.0.0`;
+    taskBody = `functionId=zoo_pk_assistGroup&body=${JSON.stringify({"confirmFlag": 1,"inviteId" : $.pkInviteId,"ss" : getBody()})}&client=wh5&clientVersion=1.0.0`;
   } else if (type === 'zoo_collectProduceScore') {
-    taskBody = `functionId=zoo_collectProduceScore&body=${JSON.stringify({"ss" :ss})}&client=wh5&clientVersion=1.0.0`;
+    taskBody = `functionId=zoo_collectProduceScore&body=${JSON.stringify({"ss" :getBody()})}&client=wh5&clientVersion=1.0.0`;
   } else if(type === 'zoo_getWelfareScore'){
-    taskBody = `functionId=zoo_getWelfareScore&body=${JSON.stringify({"type": 2,"currentScence":$.currentScence,"ss" : ss})}&client=wh5&clientVersion=1.0.0`;
+    taskBody = `functionId=zoo_getWelfareScore&body=${JSON.stringify({"type": 2,"currentScence":$.currentScence,"ss" : getBody()})}&client=wh5&clientVersion=1.0.0`;
   } else if(type === 'add_car'){
-    taskBody = `functionId=zoo_collectScore&body=${JSON.stringify({"taskId": $.taskId,"taskToken":$.taskToken,"actionType":1,"ss" : ss})}&client=wh5&clientVersion=1.0.0`
+    taskBody = `functionId=zoo_collectScore&body=${JSON.stringify({"taskId": $.taskId,"taskToken":$.taskToken,"actionType":1,"ss" : getBody()})}&client=wh5&clientVersion=1.0.0`
   }else{
-    taskBody = `functionId=${type}&body=${JSON.stringify({"taskId": $.oneTask.taskId,"actionType":1,"taskToken" : $.oneActivityInfo.taskToken,"ss" : ss})}&client=wh5&clientVersion=1.0.0`
+    taskBody = `functionId=${type}&body=${JSON.stringify({"taskId": $.oneTask.taskId,"actionType":1,"taskToken" : $.oneActivityInfo.taskToken,"ss" : getBody()})}&client=wh5&clientVersion=1.0.0`
   }
   return taskBody
 }
@@ -854,7 +852,7 @@ function getRandomArrayElements(arr, count) {
   }
   return shuffled.slice(min);
 }
-function getAuthorShareCode(url = "http://cdn.annnibb.me/eb6fdc36b281b7d5eabf33396c2683a2.json") {
+function getAuthorShareCode(url = "https://raw.githubusercontent.com/inoyna11/Write-files/master/shareCodes/jd_zoo.json") {
   return new Promise(async resolve => {
     const options = {
       "url": `${url}?${new Date()}`,
