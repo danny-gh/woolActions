@@ -275,6 +275,14 @@ async function downloader_jd() {
             "京喜农场Token"
         );
     }
+    if (remoteContent.indexOf("new Env('宝洁消消乐')") > 0 || remoteContent.indexOf("new Env('新潮品牌狂欢')") > 0  || remoteContent.indexOf("京喜领88元红包") > 0 ) {
+        await download("https://github.com/danny-gh/woolActions/raw/main/scripts/jdCookie.js", "./jdCookie.js", "京东Cookies");
+        await download(
+            "https://github.com/danny-gh/woolActions/raw/main/scripts/JS_USER_AGENTS.js",
+            "./JS_USER_AGENTS.js",
+            "JS_USER_AGENTS"
+        );
+    }
 }
 
 async function downloader_notify() {
