@@ -99,7 +99,7 @@ async function jdJoy() {
     if ($.getPetTaskConfigRes.success) {
       if ($.isNode()) {
         if (process.env.JOY_FEED_COUNT) {
-          if ([10, 20, 40, 80].indexOf(process.env.JOY_FEED_COUNT * 1) > -1) {
+          if ([0, 10, 20, 40, 80].indexOf(process.env.JOY_FEED_COUNT * 1) > -1) {
             FEED_NUM = process.env.JOY_FEED_COUNT ? process.env.JOY_FEED_COUNT * 1 : FEED_NUM;
           } else {
             console.log(`您输入的 JOY_FEED_COUNT 为非法数字，请重新输入`);
