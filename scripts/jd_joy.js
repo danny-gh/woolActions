@@ -711,13 +711,12 @@ function feedPets(feedNum) {
 function getPetTaskConfig() {
   return new Promise(resolve => {
     // const url = `${weAppUrl}/getPetTaskConfig?reqSource=weapp`;
-    // const host = `jdjoy.jd.com`;
-    // const reqSource = 'h5';
-    const host = `draw.jdfcloud.com`;
-    const reqSource = 'weapp';
+    const host = `jdjoy.jd.com`;
+    const reqSource = 'h5';
+    //const host = `draw.jdfcloud.com`;
+    //const reqSource = 'weapp';
     let opt = {
-      //url: "//jdjoy.jd.com/common/pet/getPetTaskConfig?reqSource=h5",
-      url: "//jdjoy.jd.com/common/pet/getPetTaskConfig",
+      url: "//jdjoy.jd.com/common/pet/getPetTaskConfig?reqSource=h5",
       // url: "//draw.jdfcloud.com//common/pet/getPetTaskConfig",
       method: "GET",
       data: {},
@@ -725,7 +724,8 @@ function getPetTaskConfig() {
       header: {"content-type": "application/json"}
     }
     const url = "https:"+ taroRequest(opt)['url']
-    $.get(taskUrl(url.replace(/reqSource=h5/, 'reqSource=weapp'), host, reqSource), (err, resp, data) => {
+    //$.get(taskUrl(url.replace(/reqSource=h5/, 'reqSource=weapp'), host, reqSource), (err, resp, data) => {
+    $.get(taskUrl(url, host, reqSource), (err, resp, data) => {
       try {
         if (err) {
           console.log('\n京东宠汪汪: API查询请求失败 ‼️‼️', err)
