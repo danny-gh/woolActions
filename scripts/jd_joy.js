@@ -397,8 +397,8 @@ function getDeskGoodDetails() {
     const host = `jdjoy.jd.com`;
     const reqSource = 'h5';
     let opt = {
-      // url: "//jdjoy.jd.com/common/pet/getDeskGoodDetails?reqSource=h5",
-      url: "//jdjoy.jd.com/common/pet/getPetTaskConfig?reqSource=h5",
+      url: "//jdjoy.jd.com/common/pet/getDeskGoodDetails?reqSource=h5",
+      // url: "//draw.jdfcloud.com/common/pet/getPetTaskConfig?reqSource=h5",
       method: "GET",
       data: {},
       credentials: "include",
@@ -716,8 +716,8 @@ function getPetTaskConfig() {
     const host = `draw.jdfcloud.com`;
     const reqSource = 'weapp';
     let opt = {
-      // url: "//jdjoy.jd.com/common/pet/getPetTaskConfig?reqSource=h5",
-      url: "//draw.jdfcloud.com//common/pet/getPetTaskConfig",
+      url: "//jdjoy.jd.com/common/pet/getPetTaskConfig?reqSource=h5",
+      // url: "//draw.jdfcloud.com//common/pet/getPetTaskConfig",
       method: "GET",
       data: {},
       credentials: "include",
