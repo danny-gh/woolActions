@@ -714,7 +714,8 @@ function getPetTaskConfig() {
     // const host = `jdjoy.jd.com`;
     // const reqSource = 'h5';
     const host = `draw.jdfcloud.com`;
-    const reqSource = 'weapp';
+    //const reqSource = 'weapp';
+    const reqSource = 'h5';
     let opt = {
       url: "//jdjoy.jd.com/common/pet/getPetTaskConfig?reqSource=h5",
       // url: "//draw.jdfcloud.com//common/pet/getPetTaskConfig",
