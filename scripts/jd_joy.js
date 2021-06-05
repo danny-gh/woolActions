@@ -724,7 +724,8 @@ function getPetTaskConfig() {
       header: {"content-type": "application/json"}
     }
     const url = "https:"+ taroRequest(opt)['url']
-    $.get(taskUrl(url.replace(/reqSource=h5/, 'reqSource=weapp'), host, reqSource), (err, resp, data) => {
+    //$.get(taskUrl(url.replace(/reqSource=h5/, 'reqSource=weapp'), host, reqSource), (err, resp, data) => {
+    $.get(taskUrl(url, host, reqSource), (err, resp, data) => {
       try {
         if (err) {
           console.log('\n京东宠汪汪: API查询请求失败 ‼️‼️')
