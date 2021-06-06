@@ -482,7 +482,7 @@ function jdfactory_getTaskDetail() {
             data = JSON.parse(data);
             if (data.data.bizCode === 0) {
               $.taskVos = data.data.result.taskVos;//任务列表
-              console.log(`getTaskDetail:`, $.taskVos)
+              //console.log(`getTaskDetail:`, $.taskVos)
               $.taskVos.map(item => {
                 if (item.taskType === 14) {
                   console.log(`\n【京东账号${$.index}（${$.nickName || $.UserName}）的${$.name}好友互助码】${item.assistTaskDetailVo.taskToken}\n`)
