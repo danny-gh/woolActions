@@ -658,7 +658,7 @@ function feedPets(feedNum) {
     const host = `jdjoy.jd.com`;
     const reqSource = 'h5';
     let opt = {
-      url: '//jdjoy.jd.com/common/pet/feed?feedCount=${feedNum}',
+      url: '//jdjoy.jd.com/common/pet/feed?feedCount=20',
       //url: `//draw.jdfcloud.com/common/pet/feed?feedCount=${feedNum}&reqSource=h5`,
       method: "GET",
       data: {},
