@@ -737,6 +737,7 @@ function getPetTaskConfig() {
         } else {
           // console.log('JSON.parse(data)', JSON.parse(data))
           $.getPetTaskConfigRes = JSON.parse(data);
+          console.log('\ngetPetTaskConfigRes: ', $.getPetTaskConfigRes);
         }
       } catch (e) {
         $.logErr(e, resp);
