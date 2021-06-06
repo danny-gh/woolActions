@@ -667,6 +667,8 @@ function feedPets(feedNum) {
       header: {"content-type": "application/json"}
     }
     const url = "https:"+ taroRequest(opt)['url']
+    console.log('\nurl: ', url);
+    console.log('\nhost: ', host);
     $.get(taskUrl(url, host, reqSource), async (err, resp, data) => {
       try {
         if (err) {
@@ -727,8 +729,6 @@ function getPetTaskConfig() {
       header: {"content-type": "application/json"}
     }
     const url = "https:"+ taroRequest(opt)['url']
-    console.log('\nurl: ', url);
-    console.log('\nhost: ', host);
     //$.get(taskUrl(url.replace(/reqSource=h5/, 'reqSource=weapp'), host, reqSource), (err, resp, data) => {
     $.get(taskUrl(url, host, reqSource), (err, resp, data) => {
       try {
