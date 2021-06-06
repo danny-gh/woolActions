@@ -674,6 +674,7 @@ function feedPets(feedNum) {
           console.log('\n京东宠汪汪: API查询请求失败 ‼️‼️')
         } else {
           data = JSON.parse(data);
+          console.log('\nresponse data: ', data);
           if (data.success) {
             if (data.errorCode === 'feed_ok') {
               console.log('喂食成功')
