@@ -304,6 +304,19 @@ async function doTask() {
         } else {
           console.log(`${item.taskName}已做完`)
         }
+     }
+     if (item.taskType === 9) {
+        //浏览满5s可得800电量
+        if (item.status === 1) {
+          console.log(`准备做此任务：${item.taskName}`);
+          for (let task of item.shoppingActivityVos) {
+            if (task.status === 1) {
+              await jdfactory_collectScore(task.taskToken);
+            }
+          }
+        } else {
+          console.log(`${item.taskName}已做完`)
+        }
       }
       if (item.taskType === 10) {
         if (item.status === 1) {
@@ -316,6 +329,19 @@ async function doTask() {
           }
         } else if (item.status === 2){
           console.log(`${item.taskName}已完成`);
+        }
+      }
+     if (item.taskType === 15) {
+        //浏览并加购商品得3000电量
+        if (item.status === 1) {
+          console.log(`准备做此任务：${item.taskName}`);
+          for (let task of item.productInfoVos) {
+            if (task.status === 1) {
+              await jdfactory_collectScore(task.taskToken);
+            }
+          }
+        } else {
+          console.log(`${item.taskName}已做完`)
         }
       }
       if (item.taskType === 21) {
