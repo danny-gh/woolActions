@@ -394,11 +394,14 @@ async function doTask() {
 //领取做完任务的奖励
 function jdfactory_collectScore(taskToken, actionType = null) {
   return new Promise(async resolve => {
+    var body;
     await $.wait(1000);
-    if(actionType == null)
-      $.post(taskPostUrl("jdfactory_collectScore", { taskToken }, "jdfactory_collectScore"), async (err, resp, data) => {
-    else
-      $.post(taskPostUrl("jdfactory_collectScore", { taskToken, actionType}, "jdfactory_collectScore"), async (err, resp, data) => {
+    if(actionType == null){
+      body = { taskToken };
+    }else{
+      body = { taskToken, actionType};
+    }
+    $.post(taskPostUrl("jdfactory_collectScore", body, "jdfactory_collectScore"), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
