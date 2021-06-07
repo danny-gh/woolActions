@@ -204,9 +204,10 @@ async function getTask() {
                     console.log(`去做${vo['taskName']}任务`)
                     for (let i = vo['executedTimes']; i < vo['totalTimes']; ++i) {
                       await doTask({
+                        "doType": "1",
                         "taskId": vo['taskId'],
                         "itemId": vo['itemId'],
-                        "viewSeconds": vo['viewSeconds'],
+                        //"viewSeconds": vo['viewSeconds'],
                         "activityCode": actCode
                       })
                     }
