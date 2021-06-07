@@ -224,11 +224,11 @@ async function getTask() {
     })
   })
 }
-
 async function doTask(body) {
   return new Promise(resolve => {
     console.log('doTask.taskUrl: ', taskUrl("taskRun", body))
-    $.get(taskUrl("taskRun", body), async (err, resp, data) => {
+    $.post(taskPostUrl("taskRun", body, "taskRun"), async (err, resp, data) => {
+    //$.get(taskUrl("taskRun", body), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
