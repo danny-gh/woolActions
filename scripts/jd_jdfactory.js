@@ -310,7 +310,7 @@ async function doTask() {
         if (item.status === 1) {
           console.log(`准备做此任务：${item.taskName}`);
           for (let task of item.shoppingActivityVos) {
-            console.log(`shoppingActivityVos：`, task);
+            console.log(`shoppingActivityVos.taskToken：`, task.taskToken);
             if (task.status === 1) {
               await jdfactory_collectScore(task.taskToken);
             }
