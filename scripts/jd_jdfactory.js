@@ -415,8 +415,8 @@ function jdfactory_collectScore(taskToken, actionType = null) {
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
-            console.log(`jdfactory_collectScore.body: ${JSON.stringify(body)}`);
-            console.log(`jdfactory_collectScore.return data: ${JSON.stringify(data)}`);
+            //console.log(`jdfactory_collectScore.body: ${JSON.stringify(body)}`);
+            //console.log(`jdfactory_collectScore.return data: ${JSON.stringify(data)}`);
             if (data.data.bizCode === 0) {
               $.taskVos = data.data.result.taskVos;//任务列表
               console.log(`领取做完任务的奖励：${JSON.stringify(data.data.result)}`);

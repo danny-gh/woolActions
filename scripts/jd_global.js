@@ -187,6 +187,7 @@ async function getTask() {
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
+            console.log(`getTask: ${JSON.stringify(data)}`)
             if (data['code'] === '0') {
               const {timeLimitTask, commonTask} = data.result.data
               let task = [...timeLimitTask, ...commonTask]
@@ -226,6 +227,7 @@ async function getTask() {
 
 async function doTask(body) {
   return new Promise(resolve => {
+    console.log('doTask.taskUrl: ', taskUrl("taskRun", body))
     $.get(taskUrl("taskRun", body), async (err, resp, data) => {
       try {
         if (err) {
@@ -353,10 +355,12 @@ function shareCodesFormat() {
       const tempIndex = $.index > inviteCodes.length ? (inviteCodes.length - 1) : ($.index - 1);
       $.newShareCodes = inviteCodes[tempIndex].split('@');
     }
+    /*
     const readShareCodeRes = await readShareCode();
     if (readShareCodeRes && readShareCodeRes.code === 200) {
       $.newShareCodes = [...new Set([...$.newShareCodes, ...(readShareCodeRes.data || [])])];
     }
+    */
     console.log(`第${$.index}个京东账号将要助力的好友${JSON.stringify($.newShareCodes)}`)
     resolve();
   })
