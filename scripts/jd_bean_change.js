@@ -1,35 +1,35 @@
 /*
- * @Author: LXK9301 https://github.com/LXK9301
+ * @Author: lxk0301 https://gitee.com/lxk0301
  * @Date: 2020-11-01 16:25:41
- * @Last Modified by:   LXK9301
- * @Last Modified time: 2021-02-27 10:25:41
+ * @Last Modified by:   lxk0301
+ * @Last Modified time: 2021-05-17 15:25:41
  */
 /*
-京豆变动通知脚本：https://gitee.com/lxk0301/jd_scripts/raw/master/jd_bean_change.js
-统计昨日京豆的变化情况，包括收入，支出，以及显示当前京豆数量,目前小问题:下单使用京豆后,退款重新购买会出现异常
+京东资产变动通知脚本：https://gitee.com/lxk0301/jd_scripts/raw/master/jd_bean_change.js
+统计昨日京豆的变化情况，包括收入，支出，以及显示当前京豆数量,目前小问题:下单使用京豆后,退款重新购买,计算统计会出现异常
+统计红包以及过期红包
 网页查看地址 : https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean
 支持京东双账号
-脚本兼容:QuantumultX,Surge,Loon,JSBox,Node.js
+脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 ============QuantumultX==============
 [task_local]
-#京豆变动通知
-2 9 * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_bean_change.js, tag=京豆变动通知, img-url=https://raw.githubusercontent.com/Orz-3/task/master/jd.png, enabled=true
+#京东资产变动通知
+2 9 * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_bean_change.js, tag=京东资产变动通知, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 ================Loon===============
 [Script]
-cron "2 9 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_bean_change.js, tag=京豆变动通知
+cron "2 9 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_bean_change.js, tag=京东资产变动通知
 =============Surge===========
 [Script]
-京豆变动通知 = type=cron,cronexp=2 9 * * *,wake-system=1,timeout=3600,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_bean_change.js
+京东资产变动通知 = type=cron,cronexp="2 9 * * *",wake-system=1,timeout=3600,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_bean_change.js
 
 ============小火箭=========
-京豆变动通知 = type=cron,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_bean_change.js, cronexpr="2 9 * * *", timeout=3600, enable=true
+京东资产变动通知 = type=cron,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_bean_change.js, cronexpr="2 9 * * *", timeout=3600, enable=true
  */
-const $ = new Env('京豆变动通知');
+const $ = new Env('京东资产变动通知');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let allMessage = '';
-
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
 if ($.isNode()) {
@@ -38,13 +38,7 @@ if ($.isNode()) {
   })
   if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {};
 } else {
-  let cookiesData = $.getdata('CookiesJD') || "[]";
-  cookiesData = jsonParse(cookiesData);
-  cookiesArr = cookiesData.map(item => item.cookie);
-  cookiesArr.reverse();
-  cookiesArr.push(...[$.getdata('CookieJD2'), $.getdata('CookieJD')]);
-  cookiesArr.reverse();
-  cookiesArr = cookiesArr.filter(item => item !== "" && item !== null && item !== undefined);
+  cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
 !(async () => {
   if (!cookiesArr[0]) {
@@ -63,12 +57,11 @@ if ($.isNode()) {
       $.errorMsg = '';
       $.isLogin = true;
       $.nickName = '';
-      $.levelName = '';
       $.message = '';
       $.balance = 0;
       $.expiredBalance = 0;
       await TotalBean();
-      console.log(`\n开始【京东账号${$.index}】${$.nickName || $.UserName}\n`);
+      console.log(`\n********开始【京东账号${$.index}】${$.nickName || $.UserName}******\n`);
       if (!$.isLogin) {
         $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
 
@@ -78,12 +71,11 @@ if ($.isNode()) {
         continue
       }
       await bean();
-      await redPacket();
       await showMsg();
     }
   }
-  
-  if ($.isNode()&& allMessage) {
+
+  if ($.isNode() && allMessage) {
     await notify.sendNotify(`${$.name}`, `${allMessage}`, { url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean` })
   }
 })()
@@ -315,7 +307,7 @@ function redPacket() {
             t.setHours(0, 0, 0, 0)
             t = parseInt((t - 1) / 1000)
             for (let vo of data.useRedInfo.redList || []) {
-              if (vo.activityName.includes("京喜")) {
+              if (vo.activityName.includes("京喜") || vo.activityName.includes("阶梯")) {
                 $.jxRed += parseFloat(vo.balance)
                 if (vo['endTime'] === t) {
                   $.jxRedExpire += parseFloat(vo.balance)
