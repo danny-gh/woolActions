@@ -36,6 +36,7 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 $.inviteCodeList = [];
 let cookiesArr = [];
 $.helpCkList = [];
+$.helpTaskId = 1598;
 $.appId = 10028;
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
@@ -77,6 +78,30 @@ if ($.isNode()) {
     }
     await pasture();
     await $.wait(3000);
+  }
+  for (let i = 0; i < cookiesArr.length; i++) {
+    if (cookiesArr[i]) {
+      $.cookie = cookiesArr[i];
+      $.isLogin = true;
+      await TotalBean();
+      if (!$.isLogin) {
+        continue
+      }
+      $.UserName = decodeURIComponent($.cookie.match(/pt_pin=([^; ]+)(?=;?)/) && $.cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
+
+      for (l = 0; l < $.inviteCodeList.length; l++) {
+        $.oneCodeInfo = $.inviteCodeList[l];
+        console.log(`${$.UserName} 为 ${$.oneCodeInfo.use} 助力中`)
+        await takeGetRequest('help');
+        await $.wait(500);
+        let cookieTemp = $.cookie;
+        $.cookie = $.helpCkList[l];
+        $.oneTask.taskId = $.helpTaskId;
+        await takeGetRequest('Award');
+        await $.wait(500);
+        $.cookie = cookieTemp;
+      }
+    }
   }
 
 })()
@@ -249,7 +274,11 @@ async function doTask(j) {
           await takeGetRequest('Award');
           await $.wait(2000);
         }else if(j===0){
+          //console.log(JSON.stringify($.oneTask)+'\n\n');
           console.log(`任务：${$.oneTask.taskName},未完成`);
+          //await takeGetRequest('help');
+          $.helpTaskId = $.oneTask.taskId;
+          await $.wait(2000);
         }
       }else if ($.oneTask.awardStatus === 2 && $.oneTask.taskCaller === 1) {//浏览任务
         if (Number($.oneTask.completedTimes) > 0 && $.oneTask.completedTimes === $.oneTask.targetTimes) {
@@ -283,8 +312,8 @@ async function takeGetRequest(type) {
       myRequest = getGetRequest(`GetHomePageInfo`, url);
       break;
     case 'GetUserTaskStatusList':
-      https://m.jingxi.com/newtasksys/newtasksys_front/GetUserTaskStatusList?_=1623404693642&source=jxmc&bizCode=jxmc&dateType=2&_stk=bizCode%2CdateType%2Csource&_ste=1&h5st=20210611174453641%3B3318642450258161%3B10028%3Btk01wee9f1d10a8nYmhQQlNzY2xlsYpdY%2Bxhj35GxtolIx4wFvjVz6e0Er7jCXJ5Jka9MBfjUruSe17Rs6IkhS9KYvAS%3B2bdb6c7cd6b475b87da7d58d7c743a87df10b6a76ebb0e8f3bb717ac366d7fbe&sceneval=2&g_login_type=1&g_ty=ajax
-        url = `https://m.jingxi.com/newtasksys/newtasksys_front/GetUserTaskStatusList?_=${Date.now() + 2}&source=jxmc&bizCode=jxmc&dateType=${$.dateType}&_stk=bizCode%2CdateType%2Csource&_ste=1`;
+      //https://m.jingxi.com/newtasksys/newtasksys_front/GetUserTaskStatusList?_=1623404693642&source=jxmc&bizCode=jxmc&dateType=2&_stk=bizCode%2CdateType%2Csource&_ste=1&h5st=20210611174453641%3B3318642450258161%3B10028%3Btk01wee9f1d10a8nYmhQQlNzY2xlsYpdY%2Bxhj35GxtolIx4wFvjVz6e0Er7jCXJ5Jka9MBfjUruSe17Rs6IkhS9KYvAS%3B2bdb6c7cd6b475b87da7d58d7c743a87df10b6a76ebb0e8f3bb717ac366d7fbe&sceneval=2&g_login_type=1&g_ty=ajax
+      url = `https://m.jingxi.com/newtasksys/newtasksys_front/GetUserTaskStatusList?_=${Date.now() + 2}&source=jxmc&bizCode=jxmc&dateType=${$.dateType}&_stk=bizCode%2CdateType%2Csource&_ste=1`;
       url += `&h5st=${decrypt(Date.now(), '', '', url)}&sceneval=2&g_login_type=1&g_ty=ajax`;
       myRequest = getGetRequest(`GetUserTaskStatusList`, url);
       break;
@@ -347,6 +376,7 @@ async function takeGetRequest(type) {
       try {
         dealReturn(type, data);
       } catch (e) {
+        $.runFlag = false;
         console.log(data);
         $.logErr(e, resp)
       } finally {
