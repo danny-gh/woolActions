@@ -102,7 +102,6 @@ async function jdFactory() {
     if ($.newUser === 1) return
     await jdfactory_collectElectricity();//收集产生的电量
     await jdfactory_getTaskDetail();
-    batteryFull = false;
     await doTask();
     await algorithm();//投入电力逻辑
     await showMsg();
@@ -265,6 +264,7 @@ async function helpFriends() {
 }
 async function doTask() {
   if ($.taskVos && $.taskVos.length > 0) {
+    batteryFull = false;
     for (let item of $.taskVos) {
       if(batteryFull){
         break;
