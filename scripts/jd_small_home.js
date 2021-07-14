@@ -91,7 +91,7 @@ const JD_API_HOST = 'https://lkyl.dianpusoft.cn/api';
         await createAssistUser(code, $.createAssistUserID);
       }
       */
-      for (let j = 0; j < cookiesArr.length; j++) {
+      for (let j = 0; j < $.newShareCodes.length; j++) {
         let code = $.newShareCodes[j]['code']
         await createAssistUser(code, $.createAssistUserID);
       }
