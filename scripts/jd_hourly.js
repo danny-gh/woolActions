@@ -87,7 +87,7 @@ function taskPostUrl(function_id, body = {}, function_id2) {
 }
 
 async function receiveNutrients() {
-  let plantBeanIndexResult = await request('plantBeanIndex');//plantBeanIndexBody
+  let plantBeanIndexResult = await plantBean_request('plantBeanIndex');//plantBeanIndexBody
   let roundList = plantBeanIndexResult.data.roundList;
   let currentRoundId = roundList[1].roundId;//本期的roundId
   let receiveNutrientsRes = await plantBean_request('receiveNutrients', {"roundId": currentRoundId, "monitor_refer": "plant_receiveNutrients"})
