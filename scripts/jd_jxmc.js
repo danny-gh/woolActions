@@ -445,6 +445,12 @@ function dealReturn(type, data) {
       } else if (data.ret === 2020) {
         console.log(`投喂失败，需要先收取鸡蛋`);
         $.pause = true;
+      } else if (data.ret === 1014) {
+        console.log(`投喂失败，手速太快了`);
+        $.wait(1000);
+      } else if (data.ret === 2005) {
+        console.log(`投喂失败，小鸡吃太多`);
+        $.runFeed = false;
       } else {
         console.log(`投喂失败，${data.message}`);
         console.log(JSON.stringify(data));
@@ -468,6 +474,7 @@ function dealReturn(type, data) {
         console.log(`助力成功`);
       }else if (data.ret === 0 && data.data.result === 4){
         console.log(`助力次数已用完 或者已助力`);
+        console.log(JSON.stringify(data));
         //$.canHelp = false;
       }else if(data.ret === 0 && data.data.result === 5){
         console.log(`助力已满`);
