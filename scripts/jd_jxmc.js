@@ -147,12 +147,19 @@ async function pasture() {
       $.crowInfo = $.homeInfo.cow;
     }
 
+    await $.wait(1000);
+    await takeGetRequest('GetVisitBackInfo');
+    await $.wait(1000);
+    if($.iscandraw === 1){
+      await takeGetRequest('GetVisitBackCabbage');
+    }
     await $.wait(2000);
     if ($.crowInfo.lastgettime) {
       console.log('收奶牛金币');
       await takeGetRequest('cow');
       await $.wait(2000);
     }
+    await feedCabbage();
     $.taskList = [];
     $.dateType = ``;
     for (let j = 2; j >= 0; j--) {
@@ -192,6 +199,7 @@ async function pasture() {
         }
       }
     }
+    /*
     await takeGetRequest('GetHomePageInfo');
     await $.wait(2000);
     let materialNumber = 0;
@@ -205,7 +213,7 @@ async function pasture() {
     if (Number($.homeInfo.coins) > 5000) {
       let canBuyTimes = Math.floor(Number($.homeInfo.coins) / 5000);
       console.log(`\n共有金币${$.homeInfo.coins},可以购买${canBuyTimes}次白菜`);
-      if(Number(materialNumber) < 400){
+      if(Number(materialNumber) < 600){
         for (let j = 0; j < canBuyTimes && j < 4; j++) {
           console.log(`第${j + 1}次购买白菜`);
           await takeGetRequest('buy');
@@ -228,7 +236,7 @@ async function pasture() {
         $.canFeedTimes = Math.floor(Number(materialinfoList[j].value) / 10);
         console.log(`\n共有白菜${materialinfoList[j].value}颗，每次喂10颗，可以喂${$.canFeedTimes}次`);
         $.runFeed = true;
-        for (let k = 0; k < $.canFeedTimes && $.runFeed && k < 40; k++) {
+        for (let k = 0; k < $.canFeedTimes && $.runFeed && k < 60; k++) {
           $.pause = false;
           console.log(`开始第${k + 1}次喂白菜`);
           await takeGetRequest('feed');
@@ -248,8 +256,51 @@ async function pasture() {
         }
       }
     }
+    */
   } catch (e) {
     $.logErr(e)
+  }
+}
+
+async function feedCabbage() {
+  let k = 0;
+  $.cabbageCount = 0;
+  $.coinCount = 0;
+  await takeGetRequest('GetHomePageInfo');
+  await $.wait(2000);
+  if ($.cabbageCount < 10 && $.coinCount >= 5000) {
+    await takeGetRequest('buy');
+    await $.wait(1000);
+    await takeGetRequest('GetHomePageInfo');
+    await $.wait(1000);
+  }
+  while ($.cabbageCount > 10) {
+    $.pause = false;
+    $.runFeed = true;
+    console.log(`开始第${k++}次喂白菜`);
+    await takeGetRequest('feed');
+    await $.wait(1000);
+    await takeGetRequest('GetHomePageInfo');
+    await $.wait(1000);
+    if ($.runFeed == false) {
+      break;
+    }
+    if ($.pause) {
+      for (let n = 0; n < $.homeInfo.petinfo.length; n++) {
+        $.onepetInfo = $.homeInfo.petinfo[n];
+        if ($.onepetInfo.cangetborn === 1) {
+          console.log(`开始收鸡蛋`);
+          await takeGetRequest('GetEgg');
+          await $.wait(1000);
+        }
+      }
+    }
+    if ($.cabbageCount < 10 && $.coinCount >= 5000) {
+      await takeGetRequest('buy');
+      await $.wait(1000);
+      await takeGetRequest('GetHomePageInfo');
+      await $.wait(1000);
+    }
   }
 }
 
@@ -318,55 +369,65 @@ async function takeGetRequest(type) {
       myRequest = getGetRequest(`GetUserTaskStatusList`, url);
       break;
     case 'mowing': //割草
-      url = `https://m.jingxi.com/jxmc/operservice/Action?channel=7&sceneid=1001&type=2&_stk=channel%2Csceneid%2Ctype&_ste=1`;
+      url = `https://m.jingxi.com/jxmc/operservice/Action?channel=7&sceneid=1001&type=2&activeid=${$.activeID}&_stk=channel%2Csceneid%2Ctype%2Cactiveid&_ste=1`;
       url += `&h5st=${decrypt(Date.now(), '', '', url)}&_=${Date.now() + 2}&sceneval=2&g_login_type=1&callback=jsonpCBK${String.fromCharCode(Math.floor(Math.random() * 26) + "A".charCodeAt(0))}&g_ty=ls`;
       myRequest = getGetRequest(`mowing`, url);
       break;
     case 'GetSelfResult':
-      url = `https://m.jingxi.com/jxmc/operservice/GetSelfResult?channel=7&sceneid=1001&type=14&itemid=undefined&_stk=channel%2Csceneid%2Ctype&_ste=1`;
+      url = `https://m.jingxi.com/jxmc/operservice/GetSelfResult?channel=7&sceneid=1001&type=14&activeid=${$.activeID}&itemid=undefined&_stk=channel%2Csceneid%2Ctype%2Cactiveid&_ste=1`;
       url += `&h5st=${decrypt(Date.now(), '', '', url)}&_=${Date.now() + 2}&sceneval=2&g_login_type=1&callback=jsonpCBK${String.fromCharCode(Math.floor(Math.random() * 26) + "A".charCodeAt(0))}&g_ty=ls`;
       myRequest = getGetRequest(`GetSelfResult`, url);
       break;
     case 'jump':
       let sar = Math.floor((Math.random() * $.petidList.length));
-      url = `https://m.jingxi.com/jxmc/operservice/Action?channel=7&sceneid=1001&type=1&petid=${$.petidList[sar]}&_stk=channel%2Cpetid%2Csceneid%2Ctype&_ste=1`
+      url = `https://m.jingxi.com/jxmc/operservice/Action?channel=7&sceneid=1001&type=1&activeid=${$.activeID}&petid=${$.petidList[sar]}&_stk=channel%2Cpetid%2Csceneid%2Ctype%2Cactiveid&_ste=1`
       url += `&h5st=${decrypt(Date.now(), '', '', url)}&_=${Date.now() + 2}&sceneval=2&g_login_type=1&callback=jsonpCBK${String.fromCharCode(Math.floor(Math.random() * 26) + "A".charCodeAt(0))}&g_ty=ls`;
       myRequest = getGetRequest(`jump`, url);
       break;
     case 'DoTask':
-      url = `https://m.jingxi.com/newtasksys/newtasksys_front/DoTask?_=${Date.now() + 2}&source=jxmc&taskId=${$.oneTask.taskId}&bizCode=jxmc&configExtra=&_stk=bizCode%2CconfigExtra%2Csource%2CtaskId&_ste=1`;
+      url = `https://m.jingxi.com/newtasksys/newtasksys_front/DoTask?_=${Date.now() + 2}&source=jxmc&taskId=${$.oneTask.taskId}&bizCode=jxmc&configExtra=&activeid=${$.activeID}&_stk=bizCode%2CconfigExtra%2Csource%2CtaskId%2Cactiveid&_ste=1`;
       url += `&h5st=${decrypt(Date.now(), '', '', url)}` + `&sceneval=2&g_login_type=1&g_ty=ajax`;
       myRequest = getGetRequest(`DoTask`, url);
       break;
     case 'Award':
-      url = `https://m.jingxi.com/newtasksys/newtasksys_front/Award?_=${Date.now() + 2}&source=jxmc&taskId=${$.oneTask.taskId}&bizCode=jxmc&_stk=bizCode%2Csource%2CtaskId&_ste=1`;
+      url = `https://m.jingxi.com/newtasksys/newtasksys_front/Award?_=${Date.now() + 2}&source=jxmc&taskId=${$.oneTask.taskId}&activeid=${$.activeID}&bizCode=jxmc&_stk=bizCode%2Csource%2CtaskId%2Cactiveid&_ste=1`;
       url += `&h5st=${decrypt(Date.now(), '', '', url)}` + `&sceneval=2&g_login_type=1&g_ty=ajax`;
       myRequest = getGetRequest(`Award`, url);
       break;
     case 'cow':
-      url = `https://m.jingxi.com/jxmc/operservice/GetCoin?channel=7&sceneid=1001&token=${A($.crowInfo.lastgettime)}&_stk=channel%2Csceneid%2Ctoken&_ste=1`;
+      url = `https://m.jingxi.com/jxmc/operservice/GetCoin?channel=7&sceneid=1001&token=${A($.crowInfo.lastgettime)}&activeid=${$.activeID}&_stk=channel%2Csceneid%2Ctoken%2Cactiveid&_ste=1`;
       url += `&h5st=${decrypt(Date.now(), '', '', url)}&_=${Date.now() + 2}&sceneval=2&g_login_type=1&callback=jsonpCBK${String.fromCharCode(Math.floor(Math.random() * 26) + "A".charCodeAt(0))}&g_ty=ls`;
       myRequest = getGetRequest(`cow`, url);
       break;
     case 'buy':
-      url = `https://m.jingxi.com/jxmc/operservice/Buy?channel=7&sceneid=1001&type=1&_stk=channel%2Csceneid%2Ctype&_ste=1`;
+      url = `https://m.jingxi.com/jxmc/operservice/Buy?channel=7&sceneid=1001&type=1&activeid=${$.activeID}&_stk=channel%2Csceneid%2Ctype%2Cactiveid&_ste=1`;
       url += `&h5st=${decrypt(Date.now(), '', '', url)}&_=${Date.now() + 2}&sceneval=2&g_login_type=1&callback=jsonpCBK${String.fromCharCode(Math.floor(Math.random() * 26) + "A".charCodeAt(0))}&g_ty=ls`;
       myRequest = getGetRequest(`cow`, url);
       break;
     case 'feed':
-      url = `https://m.jingxi.com/jxmc/operservice/Feed?channel=7&sceneid=1001&_stk=channel%2Csceneid&_ste=1`;
+      url = `https://m.jingxi.com/jxmc/operservice/Feed?channel=7&sceneid=1001&activeid=${$.activeID}&_stk=channel%2Csceneid%2Cactiveid&_ste=1`;
       url += `&h5st=${decrypt(Date.now(), '', '', url)}&_=${Date.now() + 2}&sceneval=2&g_login_type=1&callback=jsonpCBK${String.fromCharCode(Math.floor(Math.random() * 26) + "A".charCodeAt(0))}&g_ty=ls`;
       myRequest = getGetRequest(`cow`, url);
       break;
     case 'GetEgg':
-      url = `https://m.jingxi.com/jxmc/operservice/GetSelfResult?channel=7&sceneid=1001&type=11&itemid=${$.onepetInfo.petid}&_stk=channel%2Citemid%2Csceneid%2Ctype&_ste=1`;
+      url = `https://m.jingxi.com/jxmc/operservice/GetSelfResult?channel=7&sceneid=1001&type=11&activeid=${$.activeID}&itemid=${$.onepetInfo.petid}&_stk=channel%2Citemid%2Csceneid%2Ctype%2Cactiveid&_ste=1`;
       url += `&h5st=${decrypt(Date.now(), '', '', url)}&_=${Date.now() + 2}&sceneval=2&g_login_type=1&callback=jsonpCBK${String.fromCharCode(Math.floor(Math.random() * 26) + "A".charCodeAt(0))}&g_ty=ls`;
       myRequest = getGetRequest(`GetEgg`, url);
       break;
     case 'help':
-      url = `https://m.jingxi.com/jxmc/operservice/EnrollFriend?sharekey=${$.oneCodeInfo.code}&channel=7&sceneid=1001&_stk=channel%2Csceneid%2Csharekey&_ste=1`;
+      url = `https://m.jingxi.com/jxmc/operservice/EnrollFriend?sharekey=${$.oneCodeInfo.code}&channel=7&sceneid=1001&activeid=${$.activeID}&_stk=channel%2Csceneid%2Csharekey%2Cactiveid&_ste=1`;
       url += `&h5st=${decrypt(Date.now(), '', '', url)}&_=${Date.now() + 2}&sceneval=2&g_login_type=1&callback=jsonpCBK${String.fromCharCode(Math.floor(Math.random() * 26) + "A".charCodeAt(0))}&g_ty=ls`;
       myRequest = getGetRequest(`help`, url);
+      break;
+    case 'GetVisitBackInfo':
+      url = `https://m.jingxi.com/jxmc/queryservice/GetVisitBackInfo?channel=7&sceneid=1001&activeid=${$.activeID}&_stk=channel%2Csceneid%2Cactiveid&_ste=1`;
+      url += `&h5st=${decrypt(Date.now(), '', '', url)}&_=${Date.now() + 2}&sceneval=2&g_login_type=1&callback=jsonpCBK${String.fromCharCode(Math.floor(Math.random() * 26) + "A".charCodeAt(0))}&g_ty=ls`;
+      myRequest = getGetRequest(`GetVisitBackInfo`, url);
+      break;
+    case 'GetVisitBackCabbage':
+      url = `https://m.jingxi.com/jxmc/operservice/GetVisitBackCabbage?channel=7&sceneid=1001&activeid=${$.activeID}&_stk=channel%2Csceneid%2Cactiveid&_ste=1`;
+      url += `&h5st=${decrypt(Date.now(), '', '', url)}&_=${Date.now() + 2}&sceneval=2&g_login_type=1&callback=jsonpCBK${String.fromCharCode(Math.floor(Math.random() * 26) + "A".charCodeAt(0))}&g_ty=ls`;
+      myRequest = getGetRequest(`GetVisitBackCabbage`, url);
       break;
     default:
       console.log(`错误${type}`);
@@ -392,8 +453,33 @@ function dealReturn(type, data) {
       data = JSON.parse(data.match(new RegExp(/jsonpCBK.?\((.*);*/))[1]);
       if (data.ret === 0) {
         $.homeInfo = data.data;
+        $.activeID = $.homeInfo.activeid;
+        $.coinCount = $.homeInfo.coins;
+        let materialinfoList = $.homeInfo.materialinfo;
+        for (let j = 0; j < materialinfoList.length; j++) {
+          if (materialinfoList[j].type !== 1) {
+            continue;
+          }
+          $.cabbageCount = Number(materialinfoList[j].value);//白菜数量
+        }
       } else {
         console.log(`获取活动信息异常：${JSON.stringify(data)}\n`);
+      }
+      break;
+    case 'GetVisitBackInfo':
+      data = JSON.parse(data.match(new RegExp(/jsonpCBK.?\((.*);*/))[1]);
+      if (data.ret === 0) {
+        $.iscandraw = data.data.iscandraw;
+      } else {
+        console.log(`获取GetVisitBackInfo异常：${JSON.stringify(data)}\n`);
+      }
+      break;
+    case 'GetVisitBackCabbage':
+      data = JSON.parse(data.match(new RegExp(/jsonpCBK.?\((.*);*/))[1]);
+      if (data.ret === 0) {
+        console.log(`获取访问白菜：${data.data.drawnum}棵\n`);
+      } else {
+        console.log(`获取GetVisitBackCabbage异常：${JSON.stringify(data)}\n`);
       }
       break;
     case 'mowing':
@@ -410,6 +496,12 @@ function dealReturn(type, data) {
           $.runFlag = false;
           console.log(`未获得金币暂停${type}`);
         }
+      } else if (data.ret === 1014) {
+        $.runFlag = true;
+        console.log(`${type}异常：${JSON.stringify(data)}\n`);
+        $.wait(1000);
+      }else{
+        console.log(`${type}异常：${JSON.stringify(data)}\n`);
       }
       break;
     case 'GetSelfResult':
@@ -417,6 +509,8 @@ function dealReturn(type, data) {
       if (data.ret === 0) {
         console.log(`打开除草礼盒成功`);
         console.log(JSON.stringify(data));
+      }else{
+        console.log(`${type}异常：${JSON.stringify(data)}\n`);
       }
       break;
     case 'GetUserTaskStatusList':
@@ -424,48 +518,84 @@ function dealReturn(type, data) {
       if (data.ret === 0) {
         $.taskList = data.data.userTaskStatusList;
         //console.log(JSON.stringify($.taskList )+'\n\n');
+      }else{
+        console.log(`${type}异常：${JSON.stringify(data)}\n`);
       }
       break;
     case 'Award':
       data = JSON.parse(data);
       if (data.ret === 0) {
         console.log(`领取金币成功，获得${JSON.parse(data.data.prizeInfo).prizeInfo}`);
+      }else{
+        console.log(`${type}异常：${JSON.stringify(data)}\n`);
       }
       break;
     case 'buy':
       data = JSON.parse(data.match(new RegExp(/jsonpCBK.?\((.*);*/))[1]);
       if (data.ret === 0) {
         console.log(`购买成功，当前有白菜：${data.data.newnum}颗`);
+      }else{
+        console.log(`购买白菜异常：${JSON.stringify(data)}\n`);
       }
       break;
     case 'feed':
       data = JSON.parse(data.match(new RegExp(/jsonpCBK.?\((.*);*/))[1]);
+      switch(data.ret){
+        case 0:
+          console.log(`投喂成功`);
+          break;
+        case 1010:  //系统失联
+        case 1014:  //手速太快
+          console.log(`投喂失败，${data.message}`);
+          $.wait(1000);
+          break;
+        case 2020:  //先收蛋
+          $.pause = true;
+          console.log(`投喂失败，${data.message}`);
+          $.wait(1000);
+          break;
+        case 2005:  //吃太多
+        default:
+          $.runFeed = false;
+          console.log(`投喂失败，${data.message}`);
+          $.wait(1000);
+          break;
+      }
+      /*
       if (data.ret === 0) {
         console.log(`投喂成功`);
-      } else if (data.ret === 2020) {
-        console.log(`投喂失败，需要先收取鸡蛋`);
-        $.pause = true;
+      } else if (data.ret === 1010) {
+        console.log(`投喂失败，${data.message}`);
+        $.wait(1000);
       } else if (data.ret === 1014) {
-        console.log(`投喂失败，手速太快了`);
+        console.log(`投喂失败，${data.message}`);
         $.wait(1000);
       } else if (data.ret === 2005) {
-        console.log(`投喂失败，小鸡吃太多`);
+        console.log(`投喂失败，${data.message}`);
         $.runFeed = false;
+      } else if (data.ret === 2020) {
+        console.log(`投喂失败，${data.message}`);
+        $.pause = true;
       } else {
         console.log(`投喂失败，${data.message}`);
         console.log(JSON.stringify(data));
         $.runFeed = false;
       }
+      */
       break;
     case 'GetEgg':
       data = JSON.parse(data.match(new RegExp(/jsonpCBK.?\((.*);*/))[1]);
       if (data.ret === 0) {
         console.log(`成功收取${data.data.addnum}个蛋，现有鸡蛋${data.data.newnum}个`);
+      }else{
+        console.log(`${type}异常：${JSON.stringify(data)}\n`);
       }
       break;
     case 'DoTask':
       if (data.ret === 0) {
         console.log(`执行任务成功`);
+      }else{
+        console.log(`${type}异常：${JSON.stringify(data)}\n`);
       }
       break;
     case 'help':
@@ -474,17 +604,18 @@ function dealReturn(type, data) {
         console.log(`助力成功`);
       }else if (data.ret === 0 && data.data.result === 4){
         console.log(`助力次数已用完 或者已助力`);
-        console.log(JSON.stringify(data));
         //$.canHelp = false;
       }else if(data.ret === 0 && data.data.result === 5){
         console.log(`助力已满`);
         $.oneCodeInfo.max = true;
       }else{
-        console.log(JSON.stringify(data))
+        //console.log(JSON.stringify(data))
+        console.log(`${type}异常：${JSON.stringify(data)}\n`);
       }
       break;
     default:
-      console.log(JSON.stringify(data));
+      console.log(`${type}异常：${JSON.stringify(data)}\n`);
+      //console.log(JSON.stringify(data));
   }
 }
 
