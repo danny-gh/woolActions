@@ -160,6 +160,8 @@ async function pasture() {
       await $.wait(2000);
     }
     await feedCabbage();
+    await mowing();
+    await chickenLeg();
     $.taskList = [];
     $.dateType = ``;
     for (let j = 2; j >= 0; j--) {
@@ -172,6 +174,7 @@ async function pasture() {
       await $.wait(2000);
       await doTask(j);
       await $.wait(2000);
+      /*
       if (j === 2) {
         //割草
         console.log(`\n开始进行割草`);
@@ -198,67 +201,41 @@ async function pasture() {
           await $.wait(2000);
         }
       }
+      */
     }
-    /*
-    await takeGetRequest('GetHomePageInfo');
-    await $.wait(2000);
-    let materialNumber = 0;
-    let materialinfoList = $.homeInfo.materialinfo;
-    for (let j = 0; j < materialinfoList.length; j++) {
-      if (materialinfoList[j].type !== 1) {
-        continue;
-      }
-      materialNumber = Number(materialinfoList[j].value);//白菜数量
-    }
-    if (Number($.homeInfo.coins) > 5000) {
-      let canBuyTimes = Math.floor(Number($.homeInfo.coins) / 5000);
-      console.log(`\n共有金币${$.homeInfo.coins},可以购买${canBuyTimes}次白菜`);
-      if(Number(materialNumber) < 600){
-        for (let j = 0; j < canBuyTimes && j < 4; j++) {
-          console.log(`第${j + 1}次购买白菜`);
-          await takeGetRequest('buy');
-          await $.wait(2000);
-        }
-        await takeGetRequest('GetHomePageInfo');
-        await $.wait(2000);
-      }else{
-        console.log(`现有白菜${materialNumber},大于400颗,不进行购买`);
-      }
-    }else{
-      console.log(`\n共有金币${$.homeInfo.coins}`);
-    }
-    materialinfoList = $.homeInfo.materialinfo;
-    for (let j = 0; j < materialinfoList.length; j++) {
-      if (materialinfoList[j].type !== 1) {
-        continue;
-      }
-      if (Number(materialinfoList[j].value) > 10) {
-        $.canFeedTimes = Math.floor(Number(materialinfoList[j].value) / 10);
-        console.log(`\n共有白菜${materialinfoList[j].value}颗，每次喂10颗，可以喂${$.canFeedTimes}次`);
-        $.runFeed = true;
-        for (let k = 0; k < $.canFeedTimes && $.runFeed && k < 60; k++) {
-          $.pause = false;
-          console.log(`开始第${k + 1}次喂白菜`);
-          await takeGetRequest('feed');
-          await $.wait(2000);
-          if ($.pause) {
-            await takeGetRequest('GetHomePageInfo');
-            await $.wait(1000);
-            for (let n = 0; n < $.homeInfo.petinfo.length; n++) {
-              $.onepetInfo = $.homeInfo.petinfo[n];
-              if ($.onepetInfo.cangetborn === 1) {
-                console.log(`开始收鸡蛋`);
-                await takeGetRequest('GetEgg');
-                await $.wait(1000);
-              }
-            }
-          }
-        }
-      }
-    }
-    */
   } catch (e) {
     $.logErr(e)
+  }
+}
+
+async function mowing() {
+  //割草
+  let i = 0;
+  console.log(`\n开始进行割草`);
+  $.runFlag = true;
+  while($.runFlag){
+    $.mowingInfo = {};
+    console.log(`开始第${i++}次割草`);
+    await takeGetRequest('mowing');
+    await $.wait(1000);
+    if ($.mowingInfo.surprise === true) {
+      //除草礼盒
+      console.log(`领取除草礼盒`);
+      await takeGetRequest('GetSelfResult');
+      await $.wait(3000);
+    }
+  }
+}
+
+async function chickenLeg() {
+  //横扫鸡腿
+  let i = 0;
+  $.runFlag = true;
+  console.log(`\n开始进行横扫鸡腿`);
+  while($.runFlag){
+    console.log(`开始第${i++}次横扫鸡腿`);
+    await takeGetRequest('jump');
+    await $.wait(2000);
   }
 }
 
@@ -438,6 +415,7 @@ async function takeGetRequest(type) {
         dealReturn(type, data);
       } catch (e) {
         $.runFlag = false;
+        $.runFeed = false;
         console.log(data);
         $.logErr(e, resp)
       } finally {
@@ -501,6 +479,7 @@ function dealReturn(type, data) {
         console.log(`${type}异常：${JSON.stringify(data)}\n`);
         $.wait(1000);
       }else{
+        $.runFlag = false;
         console.log(`${type}异常：${JSON.stringify(data)}\n`);
       }
       break;
@@ -561,27 +540,6 @@ function dealReturn(type, data) {
           $.wait(1000);
           break;
       }
-      /*
-      if (data.ret === 0) {
-        console.log(`投喂成功`);
-      } else if (data.ret === 1010) {
-        console.log(`投喂失败，${data.message}`);
-        $.wait(1000);
-      } else if (data.ret === 1014) {
-        console.log(`投喂失败，${data.message}`);
-        $.wait(1000);
-      } else if (data.ret === 2005) {
-        console.log(`投喂失败，${data.message}`);
-        $.runFeed = false;
-      } else if (data.ret === 2020) {
-        console.log(`投喂失败，${data.message}`);
-        $.pause = true;
-      } else {
-        console.log(`投喂失败，${data.message}`);
-        console.log(JSON.stringify(data));
-        $.runFeed = false;
-      }
-      */
       break;
     case 'GetEgg':
       data = JSON.parse(data.match(new RegExp(/jsonpCBK.?\((.*);*/))[1]);
