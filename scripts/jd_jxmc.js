@@ -147,6 +147,19 @@ async function pasture() {
       $.crowInfo = $.homeInfo.cow;
     }
 
+    await $.wait(2000);
+    $.GetSignInfo = {};
+    await takeGetRequest('GetSignInfo');
+    if(JSON.stringify($.GetSignInfo) !== '{}' && $.GetSignInfo.signlist){
+      let signList = $.GetSignInfo.signlist;
+      for (let j = 0; j < signList.length; j++) {
+        if(signList[j].fortoday && !signList[j].hasdone){
+          await $.wait(2000);
+          console.log(`去签到`);
+          await takeGetRequest('GetSignReward');
+        }
+      }
+    }
     await $.wait(1000);
     await takeGetRequest('GetVisitBackInfo');
     await $.wait(1000);
@@ -406,6 +419,16 @@ async function takeGetRequest(type) {
       url += `&h5st=${decrypt(Date.now(), '', '', url)}&_=${Date.now() + 2}&sceneval=2&g_login_type=1&callback=jsonpCBK${String.fromCharCode(Math.floor(Math.random() * 26) + "A".charCodeAt(0))}&g_ty=ls`;
       myRequest = getGetRequest(`GetVisitBackCabbage`, url);
       break;
+    case 'GetSignInfo':
+      url = `https://m.jingxi.com/jxmc/queryservice/GetSignInfo?channel=7&sceneid=1001&activeid=${$.activeid}&activekey=${$.activekey}&_stk=channel%2Csceneid&_ste=1`;
+      url += `&h5st=${decrypt(Date.now(), '', '', url)}&_=${Date.now() + 2}&sceneval=2&g_login_type=1&callback=jsonpCBK${String.fromCharCode(Math.floor(Math.random() * 26) + "A".charCodeAt(0))}&g_ty=ls`;
+      myRequest = getGetRequest(`GetSignInfo`, url);
+      break;
+    case 'GetSignReward':
+      url = `https://m.jingxi.com/jxmc/operservice/GetSignReward?channel=7&sceneid=1001&activeid=${$.activeid}&activekey=${$.activekey}&currdate=${$.GetSignInfo.currdate}&_stk=channel%2Ccurrdate%2Csceneid&_ste=1`;
+      url += `&h5st=${decrypt(Date.now(), '', '', url)}&_=${Date.now() + 2}&sceneval=2&g_login_type=1&callback=jsonpCBK${String.fromCharCode(Math.floor(Math.random() * 26) + "A".charCodeAt(0))}&g_ty=ls`;
+      myRequest = getGetRequest(`GetSignReward`, url);
+      break;
     default:
       console.log(`错误${type}`);
   }
@@ -460,6 +483,22 @@ function dealReturn(type, data) {
         console.log(`获取GetVisitBackCabbage异常：${JSON.stringify(data)}\n`);
       }
       break;
+    case 'GetSignInfo':
+      data = JSON.parse(data.match(new RegExp(/jsonpCBK.?\((.*);*/))[1]);
+      if (data.ret === 0) {
+        $.GetSignInfo = data.data;
+      } else {
+        console.log(`${type}异常：${JSON.stringify(data)}\n`);
+      }
+      break;
+    case 'GetSignReward':
+      data = JSON.parse(data.match(new RegExp(/jsonpCBK.?\((.*);*/))[1]);
+      if (data.ret === 0) {
+        console.log(`签到成功`);
+      } else {
+        console.log(`${type}异常：${JSON.stringify(data)}\n`);
+      }
+      break;
     case 'mowing':
     case 'jump':
     case 'cow':
@@ -468,9 +507,9 @@ function dealReturn(type, data) {
         $.mowingInfo = data.data;
         let add = ($.mowingInfo.addcoins || $.mowingInfo.addcoin) ? ($.mowingInfo.addcoins || $.mowingInfo.addcoin) : 0;
         console.log(`获得金币：${add}`);
-        if(Number(add) >0 ){
+        if (Number(add) > 0) {
           $.runFlag = true;
-        }else{
+        } else {
           $.runFlag = false;
           console.log(`未获得金币暂停${type}`);
         }
@@ -478,7 +517,7 @@ function dealReturn(type, data) {
         $.runFlag = true;
         console.log(`${type}异常：${JSON.stringify(data)}\n`);
         $.wait(1000);
-      }else{
+      } else {
         $.runFlag = false;
         console.log(`${type}异常：${JSON.stringify(data)}\n`);
       }
@@ -488,7 +527,7 @@ function dealReturn(type, data) {
       if (data.ret === 0) {
         console.log(`打开除草礼盒成功`);
         console.log(JSON.stringify(data));
-      }else{
+      } else {
         console.log(`${type}异常：${JSON.stringify(data)}\n`);
       }
       break;
@@ -536,7 +575,7 @@ function dealReturn(type, data) {
         case 2005:  //吃太多
         default:
           $.runFeed = false;
-          console.log(`投喂失败，${data.message}`);
+          console.log(`投喂失败，${JSON.stringify(data)}`);
           $.wait(1000);
           break;
       }
